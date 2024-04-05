@@ -1,0 +1,99 @@
+<div
+  class="w-full h-full flex justify-center items-center md:w-9/10 md:flex-row md:m-auto"
+>
+  <div
+    class="login-display-container rounded-lg hidden md:block md:h-9/10 md:w-3/5 md:flex-row justify-end"
+  >
+    <app-login-graphics />
+  </div>
+  <div
+    class="login-form-container w-4/5 h-3/5 rounded-r-lg bg-seasalt text-center md:w-2/5 md:h-9/10 md:relative"
+  >
+    <div
+      class="form-header w-4/5 py-16 absolute flex flex-col justify-center items-center md:pt-56 md:m-auto md:w-full"
+    >
+      <h2 class="font-sans w-full font-semibold text-3xl text-amaranth">
+        Login
+      </h2>
+      <p class="text-sm w-full font-sans font-extralight">
+        Let's clip some books
+      </p>
+    </div>
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      class="login-form w-full h-full flex flex-col justify-center gap-4 items-center"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item class="w-4/5 h-fit">
+        <nz-form-control
+          nzErrorTip="Please input your username!"
+          class="h-full"
+        >
+          <nz-input-group class="h-full">
+            <input
+              type="text"
+              nz-input
+              formControlName="userName"
+              placeholder="Username"
+              class="bg-white w-full h-full rounded-lg p-3 outline-none"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="w-4/5 h-fit">
+        <nz-form-control nzErrorTip="Please input your Password!">
+          <nz-input-group>
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="Password"
+              class="bg-white w-full h-full rounded-lg p-3 outline-none"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- NOTE: I might use this later -->
+
+      <!-- <div nz-row class="login-form-margin">
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="remember">
+            <span>Remember me</span>
+          </label>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <a class="login-form-forgot">Forgot password</a>
+        </div>
+      </div> -->
+      <button
+        nz-button
+        class="login-form-button login-form-margin w-4/5 rounded-2xl flex flex-row gap-0 mt-4 hover:cursor-pointer"
+        [nzType]="'primary'"
+      >
+        <!-- Keeping this here for future use -->
+
+        <!-- from-burnt-sienna via-green-gray to-light-coral -->
+        <div
+          class="w-1/3 h-full bg-gradient-to-r from-burnt-sienna via-amaranth to-slate-500 rounded-l-3xl"
+        ></div>
+        <div
+          class="w-1/3 h-full bg-gradient-to-r from-slate-500 via-green-gray to-old-gold p-2 text-white font-semibold text-lg"
+        >
+          Login
+        </div>
+        <div
+          class="w-1/3 h-full bg-gradient-to-r from-old-gold via-burnt-sienna to-amaranth rounded-r-3xl"
+        ></div>
+      </button>
+      <p class="text-sm">
+        Don't have an account?
+        <a
+          class="bg-gradient-to-r from-burnt-sienna via-green-gray to-light-coral font-sans font-semibold inline-block text-transparent bg-clip-text hover:cursor-pointer"
+          >Create one!</a
+        >
+      </p>
+    </form>
+  </div>
+</div>
