@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginGraphicsComponent } from '../login-graphics/login-graphics.component';
+import { LoginGraphicsComponent } from './components/login-graphics/login-graphics.component';
 
 @Component({
   selector: 'app-login',
