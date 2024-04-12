@@ -1,0 +1,53 @@
+<div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
+  <div
+    class="bg-transparent border border-white w-[32%] h-full rounded-md sm:w-1/5"
+  ></div>
+  <div
+    class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
+  >
+    <div class="w-full h-fit flex flex-col gap-0">
+      <div
+        class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+      >
+        @for (genre of mockGenres; track genre) {
+        <div
+          class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+        >
+          {{ genre }}
+        </div>
+        }
+      </div>
+      <h2
+        class="font-tilt-neon text-white text-2xl font-semibold mt-2 text-nowrap"
+      >
+        {{ category }}
+      </h2>
+      @if (category !== "Currently reading") {
+      <h3 class="font-tilt-neon font-extralight text-white text-md">
+        6 authors
+      </h3>
+      } @else {
+      <h3 class="font-tilt-neon font-extralight text-white text-md">
+        Cassandra Clare
+      </h3>
+      }
+    </div>
+
+    <div class="pages-left-container align-bottom">
+      @if (category !== "Currently reading") {
+      <p
+        class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+      >
+        14 <span class="text-sm font-tilt-neon">books</span>
+      </p>
+      } @else {
+      <p
+        class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+      >
+        200
+        <span class="text-sm font-tilt-neon">pages left</span>
+      </p>
+      }
+    </div>
+  </div>
+</div>
