@@ -16,9 +16,12 @@ module.exports = {
         "indigo-dye": "rgb(49, 79, 106)",
         "dull-violet": "rgb(140, 128, 181)",
         "mantis-green": "rgb(121, 181, 123)",
+        "pale-brown": "rgb(118, 92, 84)",
       },
       fontFamily: {
         "rouge-script": ['"Rouge Script"', ...defaultTheme.fontFamily.sans],
+        pacifico: ['"Pacifico"', ...defaultTheme.fontFamily.sans],
+        "tilt-neon": ['"Tilt Neon"', ...defaultTheme.fontFamily.sans],
       },
       height: {
         "7/20": "35%",
