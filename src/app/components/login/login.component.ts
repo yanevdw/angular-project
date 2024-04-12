@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   NzFormDirective,
   NzFormControlComponent,
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
-import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
+import {
+  NzInputDirective,
+  NzInputGroupComponent,
+  NzInputModule,
+} from 'ng-zorro-antd/input';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import {
@@ -15,6 +19,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { LoginGraphicsComponent } from './components/login-graphics/login-graphics.component';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -30,17 +36,22 @@ import { LoginGraphicsComponent } from './components/login-graphics/login-graphi
     NzButtonComponent,
     ReactiveFormsModule,
     LoginGraphicsComponent,
+    NzInputModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  authService = inject(AuthService);
+  router = inject(Router);
+
   validateForm: FormGroup<{
     userName: FormControl<string>;
     password: FormControl<string>;
     // Might use later
     // remember: FormControl<boolean>;
   }> = this.fb.group({
+    // I will add more validation as I progress, this is just to setup the auth.
     userName: ['', [Validators.required]],
     password: ['', [Validators.required]],
     // Might use later
@@ -50,6 +61,8 @@ export class LoginComponent {
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
+      this.authService.setIsLoggedIn(true);
+      this.router.navigate(['home']);
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -58,6 +71,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  handleRegisterClick() {
+    this.router.navigate(['register']);
   }
 
   constructor(private fb: NonNullableFormBuilder) {}

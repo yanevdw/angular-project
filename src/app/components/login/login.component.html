@@ -10,10 +10,12 @@
     class="login-form-container w-4/5 h-3/5 rounded-r-lg bg-seasalt text-center md:w-2/5 md:h-9/10 md:relative"
   >
     <div
-      class="form-header w-4/5 py-16 absolute flex flex-col justify-center items-center md:pt-56 md:m-auto md:w-full"
+      class="form-header w-4/5 py-8 absolute flex flex-col justify-center items-center md:pt-40 md:m-auto md:w-full"
     >
-      <h2 class="font-sans w-full font-semibold text-3xl text-amaranth">
-        Login
+      <h2
+        class="font-pacifico w-full font-semibold text-3xl text-amaranth mb-2"
+      >
+        Paperclip
       </h2>
       <p class="text-sm w-full font-sans font-extralight">
         Let's clip some books
@@ -27,7 +29,7 @@
     >
       <nz-form-item class="w-4/5 h-fit">
         <nz-form-control
-          nzErrorTip="Please input your username!"
+          nzErrorTip="Please enter your username."
           class="h-full"
         >
           <nz-input-group class="h-full">
@@ -42,7 +44,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="w-4/5 h-fit">
-        <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-form-control nzErrorTip="Please enter your password.">
           <nz-input-group>
             <input
               type="password"
@@ -91,6 +93,7 @@
         Don't have an account?
         <a
           class="bg-gradient-to-r from-burnt-sienna via-green-gray to-light-coral font-sans font-semibold inline-block text-transparent bg-clip-text hover:cursor-pointer"
+          (click)="handleRegisterClick()"
           >Create one!</a
         >
       </p>
