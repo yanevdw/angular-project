@@ -18,7 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginGraphicsComponent } from './components/login-graphics/login-graphics.component';
+import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -35,7 +35,7 @@ import { Router } from '@angular/router';
     NzRowDirective,
     NzButtonComponent,
     ReactiveFormsModule,
-    LoginGraphicsComponent,
+    DesktopGraphicsComponent,
     NzInputModule,
   ],
   templateUrl: './login.component.html',

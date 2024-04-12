@@ -17,7 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginGraphicsComponent } from '../login/components/login-graphics/login-graphics.component';
+import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 
 @Component({
   selector: 'app-register',
@@ -34,7 +34,7 @@ import { LoginGraphicsComponent } from '../login/components/login-graphics/login
     NzRowDirective,
     NzButtonComponent,
     ReactiveFormsModule,
-    LoginGraphicsComponent,
+    DesktopGraphicsComponent,
   ],
 })
 export class RegisterComponent {
