@@ -1,0 +1,24 @@
+<div class="w-full h-full flex flex-col justify-center items-start">
+  <h2 class="font-tilt-neon text-2xl py-4 text-pale-brown">
+    {{ selectedCollection?.replace("-", " ")?.toUpperCase() }}
+  </h2>
+  <div
+    class="books-container w-full h-full overlow-x-hidden overflow-y-scroll flex flex-row flex-wrap gap-4 justify-center items-center content-start"
+  >
+    @for (book of books; track book.title) {
+    <div class="book-container w-[30%] h-[35%] flex flex-col">
+      <div
+        class="bg-transparent border border-white w-full h-full rounded-md sm:w-1/5"
+      ></div>
+      <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+        {{ book.title }}
+      </p>
+
+      <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+        {{ book.author }}
+      </p>
+    </div>
+
+    }
+  </div>
+</div>
