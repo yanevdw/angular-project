@@ -16,7 +16,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { LoginGraphicsComponent } from '../login/components/login-graphics/login-graphics.component';
 
