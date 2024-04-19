@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-collection-details',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './collection-details.component.html',
   styleUrl: './collection-details.component.scss',
 })
