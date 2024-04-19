@@ -60,7 +60,6 @@ export class LoginComponent {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
       this.authService.setIsLoggedIn(true);
       this.router.navigate(['home']);
     } else {
