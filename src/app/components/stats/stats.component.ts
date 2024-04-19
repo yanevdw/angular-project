@@ -3,10 +3,10 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-stats',
   standalone: true,
   imports: [HeaderComponent, FooterComponent],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+  templateUrl: './stats.component.html',
+  styleUrl: './stats.component.scss',
 })
-export class ProfileComponent {}
+export class StatsComponent {}
