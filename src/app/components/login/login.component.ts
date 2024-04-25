@@ -46,30 +46,31 @@ export class LoginComponent {
   router = inject(Router);
 
   validateForm: FormGroup<{
-    userName: FormControl<string>;
+    email: FormControl<string>;
     password: FormControl<string>;
-    // Might use later
-    // remember: FormControl<boolean>;
   }> = this.fb.group({
-    // I will add more validation as I progress, this is just to setup the auth.
-    userName: ['', [Validators.required]],
+    email: ['', [Validators.required]],
     password: ['', [Validators.required]],
-    // Might use later
-    // remember: [true],
   });
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      this.authService.setIsLoggedIn(true);
-      this.router.navigate(['home']);
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      if (document.getElementById('login-success')) {
+        document.getElementById('login-success')!.style.display = 'block';
+      }
+      this.authService.login(
+        this.validateForm.get('email')?.value!,
+        this.validateForm.get('password')?.value!
+      );
     }
+    // else {
+    // Object.values(this.validateForm.controls).forEach((control) => {
+    //   if (control.invalid) {
+    //     control.markAsDirty();
+    //     control.updateValueAndValidity({ onlySelf: true });
+    //   }
+    // });
+    // }
   }
 
   handleRegisterClick() {
