@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
-  NzFormDirective,
   NzFormControlComponent,
+  NzFormDirective,
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
@@ -16,7 +16,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
 
@@ -36,6 +36,7 @@ import { AuthService } from '../../services/auth.service';
     NzButtonComponent,
     ReactiveFormsModule,
     DesktopGraphicsComponent,
+    RouterLink,
   ],
 })
 export class RegisterComponent {
@@ -56,7 +57,7 @@ export class RegisterComponent {
         '',
         [
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/,
           ),
           Validators.required,
         ],
@@ -65,7 +66,7 @@ export class RegisterComponent {
         '',
         [
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/,
           ),
           Validators.required,
           this.confirmationValidator,
@@ -88,24 +89,16 @@ export class RegisterComponent {
         this.authService.register(name, email, password);
       }
     }
-    // else {
-    //   Object.values(this.validateForm.controls).forEach((control) => {
-    //     if (control.invalid) {
-    //       control.markAsDirty();
-    //       control.updateValueAndValidity({ onlySelf: true });
-    //     }
-    //   });
-    // }
   }
 
   updateConfirmValidator(): void {
     Promise.resolve().then(() =>
-      this.validateForm.controls.checkPassword.updateValueAndValidity()
+      this.validateForm.controls.checkPassword.updateValueAndValidity(),
     );
   }
 
   confirmationValidator: ValidatorFn = (
-    control: AbstractControl
+    control: AbstractControl,
   ): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
@@ -114,8 +107,4 @@ export class RegisterComponent {
     }
     return {};
   };
-
-  handleLoginClick() {
-    this.router.navigate(['login']);
-  }
 }

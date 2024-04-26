@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
-  NzFormDirective,
   NzFormControlComponent,
+  NzFormDirective,
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
 import {
@@ -20,7 +20,7 @@ import {
 } from '@angular/forms';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -37,6 +37,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     DesktopGraphicsComponent,
     NzInputModule,
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -53,6 +54,8 @@ export class LoginComponent {
     password: ['', [Validators.required]],
   });
 
+  constructor(private fb: NonNullableFormBuilder) {}
+
   submitForm(): void {
     if (this.validateForm.valid) {
       if (document.getElementById('login-success')) {
@@ -60,22 +63,8 @@ export class LoginComponent {
       }
       this.authService.login(
         this.validateForm.get('email')?.value!,
-        this.validateForm.get('password')?.value!
+        this.validateForm.get('password')?.value!,
       );
     }
-    // else {
-    // Object.values(this.validateForm.controls).forEach((control) => {
-    //   if (control.invalid) {
-    //     control.markAsDirty();
-    //     control.updateValueAndValidity({ onlySelf: true });
-    //   }
-    // });
-    // }
   }
-
-  handleRegisterClick() {
-    this.router.navigate(['register']);
-  }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }
