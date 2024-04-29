@@ -1,5 +1,9 @@
 export function setCookie(cookieValue: string): void {
-  document.cookie = 'currentUserId=' + cookieValue + ';';
+  const currentDate = new Date();
+  currentDate.setTime(currentDate.getTime() + 12 * 60 * 60 * 1000).toString();
+  const cookieExpiration = 'expires=' + currentDate.toUTCString();
+  document.cookie =
+    'currentUserId=' + cookieValue + ';' + cookieExpiration + ';path=/';
 }
 
 export function deleteCookie(): void {
