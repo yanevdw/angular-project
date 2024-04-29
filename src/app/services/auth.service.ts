@@ -1,12 +1,13 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Auth,
-  User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { setCookie } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,11 @@ export class AuthService {
   firebaseAuth = inject(Auth);
   router = inject(Router);
   private currentUser: User | undefined;
-
   private isLoggedIn = false;
+
+  get getCurrentUser() {
+    return this.currentUser;
+  }
 
   get isLoggedInState() {
     return this.isLoggedIn;
@@ -26,14 +30,11 @@ export class AuthService {
     this.isLoggedIn = newLoggedInState;
   }
 
-  get getCurrentUser() {
-    return this.currentUser;
-  }
-
   login = async (email: string, password: string) => {
     signInWithEmailAndPassword(this.firebaseAuth, email.trim(), password.trim())
-      .then((result) => {
-        this.currentUser = result.user;
+      .then((signedInUser) => {
+        this.currentUser = signedInUser.user;
+        setCookie(this.currentUser.uid);
         this.setIsLoggedIn(true);
         this.router.navigate(['home']);
       })
@@ -44,10 +45,11 @@ export class AuthService {
     const { user } = await createUserWithEmailAndPassword(
       this.firebaseAuth,
       email,
-      password
+      password,
     );
     await updateProfile(user, { displayName: name });
     this.currentUser = user;
+    setCookie(this.currentUser.uid);
     this.setIsLoggedIn(true);
     this.router.navigate(['home']);
   };
