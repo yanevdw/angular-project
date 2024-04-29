@@ -9,6 +9,7 @@ import {
 } from '@angular/fire/firestore';
 import { Book, BookShelf } from '../models/states';
 import { from, Observable } from 'rxjs';
+import { getCookie } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -38,12 +39,11 @@ export class DataService {
 
   // Create a bookshelf for a new user.
   createBookshelf() {
-    let userId = document.cookie;
-    userId = userId.substring(userId.indexOf('=') + 1, userId.length);
+    const userId = getCookie();
     return from(
       addDoc(collection(this.firestore, 'bookshelf'), {
         userId: userId.toString(),
-      }).then(),
+      }).then(() => {}),
     );
   }
 }
