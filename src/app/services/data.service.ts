@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  addDoc,
   collection,
   collectionData,
   Firestore,
@@ -7,7 +8,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Book, BookShelf } from '../models/states';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,16 @@ export class DataService {
       where('bookshelfId', '==', bookshelfId.toString()),
     );
     return collectionData(booksQuery) as Observable<Book[]>;
+  }
+
+  // Create a bookshelf for a new user.
+  createBookshelf() {
+    let userId = document.cookie;
+    userId = userId.substring(userId.indexOf('=') + 1, userId.length);
+    return from(
+      addDoc(collection(this.firestore, 'bookshelf'), {
+        userId: userId.toString(),
+      }).then(),
+    );
   }
 }
