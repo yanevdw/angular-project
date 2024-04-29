@@ -3,11 +3,12 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { setCookie } from '../utils/utils';
+import { deleteCookie, setCookie } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -53,4 +54,11 @@ export class AuthService {
     this.setIsLoggedIn(true);
     this.router.navigate(['home']);
   };
+
+  logout() {
+    signOut(this.firebaseAuth).then(() => {
+      deleteCookie();
+      this.router.navigate(['login']);
+    });
+  }
 }
