@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { deleteCookie, setCookie } from '../utils/utils';
 import { DataService } from './data.service';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,49 +20,55 @@ export class AuthService {
   router = inject(Router);
   dataService = inject(DataService);
   private currentUser: User | undefined;
-  private isLoggedIn = false;
+
+  // const auth = getAuth();
+  // onAuthStateChanged(auth, (user) => {
+  // if (user) {
+  //
+  //   this.currentUser = user;
+  //   // ...
+  // }});
 
   get getCurrentUser() {
     return this.currentUser;
   }
 
-  get isLoggedInState() {
-    return this.isLoggedIn;
-  }
-
-  setIsLoggedIn(newLoggedInState: boolean) {
-    this.isLoggedIn = newLoggedInState;
-  }
-
-  login = async (email: string, password: string) => {
-    signInWithEmailAndPassword(this.firebaseAuth, email.trim(), password.trim())
-      .then((signedInUser) => {
-        this.currentUser = signedInUser.user;
-        setCookie(this.currentUser.uid);
-        this.setIsLoggedIn(true);
-        this.router.navigate(['home']);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  register = async (name: string, email: string, password: string) => {
-    const { user } = await createUserWithEmailAndPassword(
-      this.firebaseAuth,
-      email,
-      password,
+  login(email: string, password: string) {
+    return from(
+      signInWithEmailAndPassword(
+        this.firebaseAuth,
+        email.trim(),
+        password.trim(),
+      )
+        .then((signedInUser) => {
+          this.currentUser = signedInUser.user;
+          setCookie(this.currentUser.uid);
+          this.router.navigate(['home']);
+        })
+        .catch((error) => console.error(error)),
     );
-    await updateProfile(user, { displayName: name });
-    this.currentUser = user;
-    setCookie(this.currentUser.uid);
-    this.dataService.createBookshelf();
-    this.setIsLoggedIn(true);
-    this.router.navigate(['home']);
-  };
+  }
+
+  register(name: string, email: string, password: string) {
+    return from(
+      createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(
+        (response) => {
+          updateProfile(response.user, { displayName: name }),
+            (this.currentUser = response.user);
+          setCookie(this.currentUser.uid);
+          this.dataService.createBookshelf();
+          this.router.navigate(['home']);
+        },
+      ),
+    );
+  }
 
   logout() {
-    signOut(this.firebaseAuth).then(() => {
-      deleteCookie();
-      this.router.navigate(['login']);
-    });
+    return from(
+      signOut(this.firebaseAuth).then(() => {
+        deleteCookie();
+        // this.router.navigate(['login']);
+      }),
+    );
   }
 }
