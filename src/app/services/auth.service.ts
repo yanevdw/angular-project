@@ -9,6 +9,7 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { deleteCookie, setCookie } from '../utils/utils';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ import { deleteCookie, setCookie } from '../utils/utils';
 export class AuthService {
   firebaseAuth = inject(Auth);
   router = inject(Router);
+  dataService = inject(DataService);
   private currentUser: User | undefined;
   private isLoggedIn = false;
 
@@ -51,6 +53,7 @@ export class AuthService {
     await updateProfile(user, { displayName: name });
     this.currentUser = user;
     setCookie(this.currentUser.uid);
+    this.dataService.createBookshelf();
     this.setIsLoggedIn(true);
     this.router.navigate(['home']);
   };
