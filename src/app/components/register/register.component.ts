@@ -19,6 +19,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -42,6 +43,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent {
   router = inject(Router);
   authService = inject(AuthService);
+  registerSubscription: Subscription | undefined;
   validateForm: FormGroup<{
     name: FormControl<string>;
     email: FormControl<string>;
@@ -86,7 +88,9 @@ export class RegisterComponent {
         const email = this.validateForm.get('email')?.value!;
         const password = this.validateForm.get('password')?.value!;
 
-        this.authService.register(name, email, password);
+        this.registerSubscription = this.authService
+          .register(name, email, password)
+          .subscribe();
       }
     }
   }
@@ -107,4 +111,8 @@ export class RegisterComponent {
     }
     return {};
   };
+
+  ngOnDestroy(): void {
+    this.registerSubscription?.unsubscribe();
+  }
 }

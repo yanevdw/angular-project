@@ -21,6 +21,7 @@ import {
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -45,6 +46,7 @@ import { Router, RouterLink } from '@angular/router';
 export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  loginSubscription: Subscription | undefined;
 
   validateForm: FormGroup<{
     email: FormControl<string>;
@@ -61,10 +63,16 @@ export class LoginComponent {
       if (document.getElementById('login-success')) {
         document.getElementById('login-success')!.style.display = 'block';
       }
-      this.authService.login(
-        this.validateForm.get('email')?.value!,
-        this.validateForm.get('password')?.value!,
-      );
+      this.loginSubscription = this.authService
+        .login(
+          this.validateForm.get('email')?.value!,
+          this.validateForm.get('password')?.value!,
+        )
+        .subscribe();
     }
+  }
+
+  ngOnDestroy() {
+    this.loginSubscription?.unsubscribe();
   }
 }
