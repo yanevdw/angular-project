@@ -1,14 +1,27 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { heroArrowLeftEndOnRectangle } from '@ng-icons/heroicons/outline';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [NgIconComponent],
+  viewProviders: [provideIcons({ heroArrowLeftEndOnRectangle })],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   authService = inject(AuthService);
   loggedInUser = this.authService.getCurrentUser?.displayName;
+  logOutSubscription: Subscription | undefined;
+
+  handleLogOutClick() {
+    this.logOutSubscription = this.authService.logout().subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.logOutSubscription?.unsubscribe();
+  }
 }
