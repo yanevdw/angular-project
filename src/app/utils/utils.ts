@@ -13,7 +13,7 @@ export function deleteCookie(): void {
 
 export function getCookie() {
   const cookie = decodeURIComponent(document.cookie);
-  const cookieSections = document.cookie.split(';');
+  const cookieSections = cookie.split(';');
   let cookieValue = cookieSections[0];
   cookieValue = cookieValue.substring(
     cookieValue.indexOf('=') + 1,
