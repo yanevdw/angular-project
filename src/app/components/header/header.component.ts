@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangle } from '@ng-icons/heroicons/outline';
 import { Subscription } from 'rxjs';
+import { getCookie } from '../../utils/utils';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnDestroy {
   authService = inject(AuthService);
-  loggedInUser = this.authService.getCurrentUser?.displayName;
+  loggedInUser = getCookie('username');
   logOutSubscription: Subscription | undefined;
 
   handleLogOutClick() {

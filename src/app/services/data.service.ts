@@ -39,7 +39,7 @@ export class DataService {
 
   // Create a bookshelf for a new user.
   createBookshelf() {
-    const userId = getCookie();
+    const userId = getCookie('currentUserId');
     return from(
       addDoc(collection(this.firestore, 'bookshelf'), {
         userId: userId.toString(),

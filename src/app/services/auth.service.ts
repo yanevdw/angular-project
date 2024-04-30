@@ -2,11 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
+  getAuth,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
   User,
 } from '@angular/fire/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { deleteCookie, setCookie } from '../utils/utils';
 import { DataService } from './data.service';
@@ -21,13 +23,14 @@ export class AuthService {
   dataService = inject(DataService);
   private currentUser: User | undefined;
 
-  // const auth = getAuth();
-  // onAuthStateChanged(auth, (user) => {
-  // if (user) {
-  //
-  //   this.currentUser = user;
-  //   // ...
-  // }});
+  constructor() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.currentUser = user;
+      }
+    });
+  }
 
   get getCurrentUser() {
     return this.currentUser;
@@ -42,7 +45,8 @@ export class AuthService {
       )
         .then((signedInUser) => {
           this.currentUser = signedInUser.user;
-          setCookie(this.currentUser.uid);
+          setCookie('currentUserId', this.currentUser.uid);
+          setCookie('username', this.currentUser?.displayName!);
           this.router.navigate(['home']);
         })
         .catch((error) => console.error(error)),
@@ -53,9 +57,10 @@ export class AuthService {
     return from(
       createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(
         (response) => {
-          updateProfile(response.user, { displayName: name }),
-            (this.currentUser = response.user);
-          setCookie(this.currentUser.uid);
+          updateProfile(response.user, { displayName: name });
+          this.currentUser = response.user;
+          setCookie('currentUserId', this.currentUser.uid);
+          setCookie('username', this.currentUser?.displayName!);
           this.dataService.createBookshelf();
           this.router.navigate(['home']);
         },
@@ -66,8 +71,9 @@ export class AuthService {
   logout() {
     return from(
       signOut(this.firebaseAuth).then(() => {
-        deleteCookie();
-        // this.router.navigate(['login']);
+        deleteCookie('currentUserId');
+        deleteCookie('username');
+        this.router.navigate(['login']);
       }),
     );
   }

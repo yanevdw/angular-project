@@ -14,7 +14,7 @@ import { getCookie } from '../../utils/utils';
 export class CollectionsComponent implements OnInit {
   bookshelfId: number | undefined;
   dataService = inject(DataService);
-  bookshelfResult$ = this.dataService.getBookshelf(getCookie());
+  bookshelfResult$ = this.dataService.getBookshelf(getCookie('currentUserId'));
 
   ngOnInit() {
     let bookshelfSubscription = this.bookshelfResult$.subscribe((bookshelf) => {
