@@ -4,16 +4,15 @@
   <div
     class="user-container h-full w-full flex justify-start items-center gap-2"
   >
-    @if (loggedInUser !== null && loggedInUser !== "" && loggedInUser !== undefined) {
-      <p
-        class="bg-seasalt w-fit h-fit rounded-3xl px-3 py-1.5 text-xl font-pacifico text-pale-brown"
-      >
-        {{ loggedInUser.charAt(0) }}
-      </p>
-      <p class="font-tilt-neon font-semibold text-lg text-pale-brown">
-        Hi {{ loggedInUser }}
-      </p>
-    }
+
+    <p
+      class="bg-seasalt w-fit h-fit rounded-3xl px-3 py-1.5 text-xl font-pacifico text-pale-brown"
+    >
+      {{ loggedInUser ? loggedInUser.charAt(0) : "" }}
+    </p>
+    <p class="font-tilt-neon font-semibold text-lg text-pale-brown">
+      Hi {{ loggedInUser ? loggedInUser : "" }}
+    </p>
 
 
   </div>

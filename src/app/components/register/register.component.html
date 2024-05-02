@@ -77,11 +77,10 @@
           />
           <ng-template #errorTpl let-control>
             @if (control.errors?.['required']) {
-              Please confirm your password!
+              Please confirm your password.
             }
             @if (control.errors?.['confirm']) {
-              Two passwords that you enter is
-                inconsistent!
+              The two passwords do not match.
             }
           </ng-template>
         </nz-form-control>

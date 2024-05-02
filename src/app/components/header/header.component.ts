@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.isUserSet$.subscribe((user) => {
       if (user) {
         this.loggedInUser = this.authService.currentUserSignal()?.name;
-      } else {
       }
     });
   }

@@ -25,10 +25,10 @@ export class CollectionsComponent implements OnInit {
     });
 
     const bookshelfResult$ = this.dataService.getBookshelf(
-      this.loggedInUserId!,
+      this.loggedInUserId ?? '',
     );
     let bookshelfSubscription = bookshelfResult$.subscribe((bookshelf) => {
-      this.bookshelfId = bookshelf[0].id;
+      this.bookshelfId = bookshelf?.[0]?.id;
     });
     // Unsubscribe after the id has been fetched.
     if (bookshelfSubscription && this.bookshelfId) {
