@@ -90,7 +90,11 @@ export class RegisterComponent {
 
         this.registerSubscription = this.authService
           .register(name, email, password)
-          .subscribe();
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/home']);
+            },
+          });
       }
     }
   }
