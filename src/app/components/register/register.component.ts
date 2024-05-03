@@ -21,6 +21,8 @@ import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.c
 import { Store } from '@ngrx/store';
 import { CurrentUserState } from '../../store/reducer';
 import { getRegister } from '../../store/actions';
+import { selectedUser } from '../../store/selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -44,6 +46,8 @@ import { getRegister } from '../../store/actions';
 export class RegisterComponent {
   router = inject(Router);
   store = inject(Store<CurrentUserState>);
+  register$ = this.store.select(selectedUser);
+  registerSubscription: Subscription | undefined = undefined;
   validateForm: FormGroup<{
     name: FormControl<string>;
     email: FormControl<string>;
@@ -95,6 +99,8 @@ export class RegisterComponent {
             password: newUserPassword,
           }),
         );
+
+        this.registerSubscription = this.register$.subscribe();
       }
     }
   }
@@ -115,4 +121,8 @@ export class RegisterComponent {
     }
     return {};
   };
+
+  ngOnDestroy(): void {
+    this.registerSubscription?.unsubscribe();
+  }
 }

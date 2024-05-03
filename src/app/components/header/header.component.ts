@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangle } from '@ng-icons/heroicons/outline';
@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { selectedUser } from '../../store/selectors';
 import { getLogout } from '../../store/actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,13 +18,13 @@ import { getLogout } from '../../store/actions';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   authService = inject(AuthService);
-
   router = inject(Router);
   store = inject(Store<CurrentUserState>);
   currentUserName: string | undefined = undefined;
-  loggedInUserInfo = this.store.select(selectedUser);
+  loggedInUserInfo$ = this.store.select(selectedUser);
+  logoutSubscription: Subscription | undefined = undefined;
 
   constructor() {
     // Have to do this because the displayName is not persisting.
@@ -32,5 +33,10 @@ export class HeaderComponent {
 
   handleLogOutClick() {
     this.store.dispatch(getLogout());
+    this.logoutSubscription = this.loggedInUserInfo$.subscribe();
+  }
+
+  ngOnDestroy() {
+    this.logoutSubscription?.unsubscribe();
   }
 }

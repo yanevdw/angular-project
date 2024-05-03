@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NzFormControlComponent,
   NzFormDirective,
@@ -23,6 +23,8 @@ import { Router, RouterLink } from '@angular/router';
 import { CurrentUserState } from '../../store/reducer';
 import { Store } from '@ngrx/store';
 import { getLogin } from '../../store/actions';
+import { Subscription } from 'rxjs';
+import { selectedUser } from '../../store/selectors';
 
 @Component({
   selector: 'app-login',
@@ -44,9 +46,11 @@ import { getLogin } from '../../store/actions';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   router = inject(Router);
   store = inject(Store<CurrentUserState>);
+  login$ = this.store.select(selectedUser);
+  loginSubscription: Subscription | undefined = undefined;
 
   validateForm: FormGroup<{
     email: FormControl<string>;
@@ -69,6 +73,12 @@ export class LoginComponent {
           password: this.validateForm.get('password')?.value ?? '',
         }),
       );
+
+      this.loginSubscription = this.login$.subscribe();
     }
+  }
+
+  ngOnDestroy() {
+    this.loginSubscription?.unsubscribe();
   }
 }
