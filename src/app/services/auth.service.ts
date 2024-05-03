@@ -9,7 +9,7 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { DataService } from './data.service';
-import { from, Subject } from 'rxjs';
+import { from, map, Observable, Subject } from 'rxjs';
 import { UserInfo } from '../models/states';
 
 @Injectable({
@@ -22,16 +22,33 @@ export class AuthService {
   currentUser$ = user(this.firebaseAuth);
   currentUserSignal = signal<UserInfo | undefined | null>(undefined);
   isUserSet$ = new Subject<boolean>();
+  // Have to use this because the displayName is not persisting when I register.
+  private currentUserName = '';
 
-  login(email: string, password: string) {
+  getCurrentUserName(): string {
+    return this.currentUserName;
+  }
+
+  login(
+    email: string,
+    password: string,
+  ): Observable<{ name: string; id: string }> {
     return from(
       signInWithEmailAndPassword(
         this.firebaseAuth,
         email.trim(),
         password.trim(),
-      )
-        .then(() => {})
-        .catch((error) => console.error(error)),
+      ),
+    ).pipe(
+      map((user) => {
+        if (user.user.displayName) {
+          this.router.navigate(['home']);
+          return { name: user.user.displayName!, id: user.user.uid };
+        } else {
+          this.router.navigate(['home']);
+          return { name: '', id: user.user.uid };
+        }
+      }),
     );
   }
 
@@ -41,13 +58,24 @@ export class AuthService {
         (response) => {
           updateProfile(response.user, { displayName: name });
           this.dataService.createBookshelf(response.user.uid);
+          // Have to use this because the displayName is not persisting when I register.
+          this.currentUserName = name;
           this.router.navigate(['home']);
+          return {
+            name: response.user.displayName ?? '',
+            id: response.user.uid,
+          };
         },
       ),
     );
   }
 
   logout() {
-    return from(signOut(this.firebaseAuth).then(() => {}));
+    return from(
+      signOut(this.firebaseAuth).then(() => {
+        this.currentUserName = '';
+        this.router.navigate(['/login']);
+      }),
+    );
   }
 }
