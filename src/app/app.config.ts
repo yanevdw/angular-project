@@ -6,6 +6,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment.development';
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,8 @@ export const appConfig: ApplicationConfig = {
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore())
     ]),
-    provideStore()
+    provideStore(),
+    provideEffects()
 ],
 
 };
