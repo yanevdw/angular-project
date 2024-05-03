@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { Book, BookShelf } from '../models/states';
 
 // Actions for login
 export const getLogin = createAction(
@@ -36,20 +35,23 @@ export const getRegisterComplete = createAction(
 export const getLogout = createAction('[USER] Get Logout');
 export const getLogoutComplete = createAction('[USER] Get LogoutComplete');
 
+// Might use ate a later stage
+//--------------------------------------------------------------------------------------------------------
 // Actions for bookshelf
-export const getBookshelf = createAction(
-  '[BOOKSHELF] Get Bookshelf',
-  props<{ userId: string }>(),
-);
-export const getBookshelfComplete = createAction(
-  '[BOOKSHELF] Get BookshelfComplete',
-  props<{ bookshelf: BookShelf }>(),
-);
-
+// export const getBookshelf = createAction(
+//   '[BOOKSHELF] Get Bookshelf',
+//   props<{ userId: string }>(),
+// );
+// export const getBookshelfComplete = createAction(
+//   '[BOOKSHELF] Get BookshelfComplete',
+//   props<{ bookshelf: BookShelf }>(),
+// );
+//
 // Actions for API calls
-export const getBooks = createAction('[BOOKS] Get Books');
-
-export const getBooksComplete = createAction(
-  '[BOOKS] GetBooksComplete',
-  props<{ books: Book[] }>(),
-);
+// export const getBooks = createAction('[BOOKS] Get Books');
+//
+// export const getBooksComplete = createAction(
+//   '[BOOKS] GetBooksComplete',
+//   props<{ books: Book[] }>(),
+// );
+//--------------------------------------------------------------------------------------------------------
