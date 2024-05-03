@@ -22,6 +22,12 @@ export class AuthService {
   currentUser$ = user(this.firebaseAuth);
   currentUserSignal = signal<UserInfo | undefined | null>(undefined);
   isUserSet$ = new Subject<boolean>();
+  // Have to use this because the displayName is not persisting when I register.
+  private currentUserName = '';
+
+  getCurrentUserName(): string {
+    return this.currentUserName;
+  }
 
   login(
     email: string,
@@ -36,8 +42,10 @@ export class AuthService {
     ).pipe(
       map((user) => {
         if (user.user.displayName) {
+          this.router.navigate(['home']);
           return { name: user.user.displayName!, id: user.user.uid };
         } else {
+          this.router.navigate(['home']);
           return { name: '', id: user.user.uid };
         }
       }),
@@ -50,14 +58,23 @@ export class AuthService {
         (response) => {
           updateProfile(response.user, { displayName: name });
           this.dataService.createBookshelf(response.user.uid);
+          // Have to use this because the displayName is not persisting when I register.
+          this.currentUserName = name;
           this.router.navigate(['home']);
-          return { name: response.user.displayName!, id: response.user.uid };
+          return {
+            name: response.user.displayName ?? '',
+            id: response.user.uid,
+          };
         },
       ),
     );
   }
 
   logout() {
-    return from(signOut(this.firebaseAuth).then(() => {}));
+    return from(
+      signOut(this.firebaseAuth).then(() => {
+        this.currentUserName = '';
+      }),
+    );
   }
 }
