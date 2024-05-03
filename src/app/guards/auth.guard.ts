@@ -10,9 +10,9 @@ export const authGuard: CanActivateFn = (route, state) => {
   authService.currentUser$.pipe(take(1)).subscribe((user) => {
     if (user) {
       authService.currentUserSignal.set({
-        email: user.email!,
-        name: user.displayName!,
-        id: user.uid!,
+        email: user.email ?? '',
+        name: user.displayName ?? '',
+        id: user.uid ?? '',
       });
     } else {
       authService.currentUserSignal.set(null);
