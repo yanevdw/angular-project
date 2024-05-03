@@ -32,6 +32,10 @@ export const getRegisterComplete = createAction(
   }>(),
 );
 
+// Actions for logout
+export const getLogout = createAction('[USER] Get Logout');
+export const getLogoutComplete = createAction('[USER] Get LogoutComplete');
+
 // Actions for bookshelf
 export const getBookshelf = createAction(
   '[BOOKSHELF] Get Bookshelf',

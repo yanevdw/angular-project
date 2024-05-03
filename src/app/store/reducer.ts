@@ -1,5 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import { getLoginComplete, getRegisterComplete } from './actions';
+import {
+  getLoginComplete,
+  getLogoutComplete,
+  getRegisterComplete,
+} from './actions';
 
 export interface CurrentUserState {
   name: string;
@@ -19,5 +23,8 @@ export const userReducer = createReducer(
   }),
   on(getRegisterComplete, (state, { name, id }) => {
     return { ...state, name, id };
+  }),
+  on(getLogoutComplete, (state) => {
+    return { ...state, name: '', id: '' };
   }),
 );

@@ -3,11 +3,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   getLogin,
   getLoginComplete,
+  getLogout,
+  getLogoutComplete,
   getRegister,
   getRegisterComplete,
 } from './actions';
 import { AuthService } from '../services/auth.service';
-import { catchError, EMPTY, map, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, retry, switchMap } from 'rxjs';
 
 @Injectable()
 export class UserEffects {
@@ -17,6 +19,7 @@ export class UserEffects {
       switchMap((action: { email: string; password: string }) =>
         this.authService.login(action.email, action.password).pipe(
           map(({ name, id }) => getLoginComplete({ name, id })),
+          retry(1),
           catchError((error) => {
             console.error(
               'An unexpected error occurred while trying to log you in: ',
@@ -37,6 +40,7 @@ export class UserEffects {
           .register(action.name, action.email, action.password)
           .pipe(
             map(({ name, id }) => getRegisterComplete({ name, id })),
+            retry(1),
             catchError((error) => {
               console.error(
                 'An unexpected error occurred while trying to register you: ',
@@ -45,6 +49,25 @@ export class UserEffects {
               return EMPTY;
             }),
           ),
+      ),
+    ),
+  );
+
+  getLogout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getLogout.type),
+      switchMap(() =>
+        this.authService.logout().pipe(
+          map(() => getLogoutComplete()),
+          retry(1),
+          catchError((error) => {
+            console.error(
+              'An unexpected error occurred while trying to log you out: ',
+              error,
+            );
+            return EMPTY;
+          }),
+        ),
       ),
     ),
   );
