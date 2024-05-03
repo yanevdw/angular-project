@@ -4,7 +4,7 @@
   <div
     class="login-display-container rounded-lg hidden md:block md:h-9/10 md:w-3/5 md:flex-row justify-end"
   >
-    <app-desktop-graphics />
+    <app-desktop-graphics/>
   </div>
   <div
     class="login-form-container w-4/5 h-3/5 rounded-r-lg bg-seasalt text-center md:w-2/5 md:h-9/10 md:relative"
@@ -22,23 +22,23 @@
       </p>
     </div>
     <form
-      nz-form
+      (ngSubmit)="submitForm()"
       [formGroup]="validateForm"
       class="login-form w-full h-full flex flex-col justify-center gap-4 items-center"
-      (ngSubmit)="submitForm()"
+      nz-form
     >
       <nz-form-item class="w-4/5 h-fit">
         <nz-form-control
-          nzErrorTip="Please enter your username."
           class="h-full"
+          nzErrorTip="Please enter your username."
         >
           <nz-input-group class="h-full">
             <input
-              type="text"
-              nz-input
-              formControlName="userName"
-              placeholder="Username"
               class="bg-white w-full h-full rounded-lg p-3 outline-none"
+              formControlName="email"
+              nz-input
+              placeholder="Email"
+              type="text"
             />
           </nz-input-group>
         </nz-form-control>
@@ -47,11 +47,11 @@
         <nz-form-control nzErrorTip="Please enter your password.">
           <nz-input-group>
             <input
-              type="password"
-              nz-input
-              formControlName="password"
-              placeholder="Password"
               class="bg-white w-full h-full rounded-lg p-3 outline-none"
+              formControlName="password"
+              nz-input
+              placeholder="Password"
+              type="password"
             />
           </nz-input-group>
         </nz-form-control>
@@ -70,9 +70,9 @@
         </div>
       </div> -->
       <button
-        nz-button
-        class="login-form-button login-form-margin w-4/5 rounded-2xl flex flex-row gap-0 mt-4 hover:cursor-pointer"
         [nzType]="'primary'"
+        class="login-form-button login-form-margin w-4/5 rounded-2xl flex flex-row gap-0 mt-4 hover:cursor-pointer"
+        nz-button
       >
         <!-- Keeping this here for future use -->
 
@@ -92,11 +92,16 @@
       <p class="text-sm">
         Don't have an account?
         <a
+          [routerLink]="['/register']"
           class="bg-gradient-to-r from-burnt-sienna via-green-gray to-light-coral font-sans font-semibold inline-block text-transparent bg-clip-text hover:cursor-pointer"
-          (click)="handleRegisterClick()"
-          >Create one!</a
+        >Create one!</a
         >
       </p>
+      <label
+        class="hidden text-md text-amaranth font-semibold"
+        id="login-success"
+      >Organising your shelf...</label
+      >
     </form>
   </div>
 </div>

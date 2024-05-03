@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
-  NzFormDirective,
   NzFormControlComponent,
+  NzFormDirective,
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
 import {
@@ -20,7 +20,8 @@ import {
 } from '@angular/forms';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -37,44 +38,45 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     DesktopGraphicsComponent,
     NzInputModule,
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
+  loginSubscription: Subscription | undefined;
 
   validateForm: FormGroup<{
-    userName: FormControl<string>;
+    email: FormControl<string>;
     password: FormControl<string>;
-    // Might use later
-    // remember: FormControl<boolean>;
   }> = this.fb.group({
-    // I will add more validation as I progress, this is just to setup the auth.
-    userName: ['', [Validators.required]],
+    email: ['', [Validators.required]],
     password: ['', [Validators.required]],
-    // Might use later
-    // remember: [true],
   });
+
+  constructor(private fb: NonNullableFormBuilder) {}
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      this.authService.setIsLoggedIn(true);
-      this.router.navigate(['home']);
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      if (document.getElementById('login-success')) {
+        document.getElementById('login-success')!.style.display = 'block';
+      }
+      this.loginSubscription = this.authService
+        .login(
+          this.validateForm.get('email')?.value!,
+          this.validateForm.get('password')?.value!,
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/home']);
+          },
+        });
     }
   }
 
-  handleRegisterClick() {
-    this.router.navigate(['register']);
+  ngOnDestroy(): void {
+    this.loginSubscription?.unsubscribe();
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

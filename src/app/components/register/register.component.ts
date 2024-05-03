@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
-  NzFormDirective,
   NzFormControlComponent,
+  NzFormDirective,
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
@@ -16,8 +16,10 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -35,10 +37,13 @@ import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.c
     NzButtonComponent,
     ReactiveFormsModule,
     DesktopGraphicsComponent,
+    RouterLink,
   ],
 })
 export class RegisterComponent {
   router = inject(Router);
+  authService = inject(AuthService);
+  registerSubscription: Subscription | undefined;
   validateForm: FormGroup<{
     name: FormControl<string>;
     email: FormControl<string>;
@@ -46,28 +51,62 @@ export class RegisterComponent {
     checkPassword: FormControl<string>;
   }>;
 
+  constructor(private fb: NonNullableFormBuilder) {
+    this.validateForm = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.email, Validators.required]],
+      password: [
+        '',
+        [
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/,
+          ),
+          Validators.required,
+        ],
+      ],
+      checkPassword: [
+        '',
+        [
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&]).{8,}/,
+          ),
+          Validators.required,
+          this.confirmationValidator,
+        ],
+      ],
+    });
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
-      // console.log('submit', this.validateForm.value);
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      if (
+        this.validateForm.get('name') &&
+        this.validateForm.get('email') &&
+        this.validateForm.get('password')
+      ) {
+        const name = this.validateForm.get('name')?.value!;
+        const email = this.validateForm.get('email')?.value!;
+        const password = this.validateForm.get('password')?.value!;
+
+        this.registerSubscription = this.authService
+          .register(name, email, password)
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/home']);
+            },
+          });
+      }
     }
   }
 
   updateConfirmValidator(): void {
-    /** wait for refresh value */
     Promise.resolve().then(() =>
-      this.validateForm.controls.checkPassword.updateValueAndValidity()
+      this.validateForm.controls.checkPassword.updateValueAndValidity(),
     );
   }
 
   confirmationValidator: ValidatorFn = (
-    control: AbstractControl
+    control: AbstractControl,
   ): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
@@ -77,20 +116,7 @@ export class RegisterComponent {
     return {};
   };
 
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
-
-  constructor(private fb: NonNullableFormBuilder) {
-    this.validateForm = this.fb.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
-      checkPassword: ['', [Validators.required, this.confirmationValidator]],
-    });
-  }
-
-  handleLoginClick() {
-    this.router.navigate(['login']);
+  ngOnDestroy(): void {
+    this.registerSubscription?.unsubscribe();
   }
 }
