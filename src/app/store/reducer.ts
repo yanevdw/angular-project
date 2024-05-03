@@ -1,22 +1,23 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserInfo } from '../models/states';
 import { getLoginComplete, getRegisterComplete } from './actions';
 
 export interface CurrentUserState {
-  currentUser: UserInfo | undefined;
+  name: string;
+  id: string;
 }
 
 export const userFeatureKey = 'user';
 const initialUserState: CurrentUserState = {
-  currentUser: undefined,
+  name: '',
+  id: '',
 };
 
 export const userReducer = createReducer(
   initialUserState,
-  on(getLoginComplete, (state, { currentUser }) => {
-    return { ...state, currentUser };
+  on(getLoginComplete, (state, { name, id }) => {
+    return { ...state, name, id };
   }),
-  on(getRegisterComplete, (state, { currentUser }) => {
-    return { ...state, currentUser };
+  on(getRegisterComplete, (state, { name, id }) => {
+    return { ...state, name, id };
   }),
 );
