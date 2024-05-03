@@ -19,3 +19,9 @@ export interface Book {
   rating: number;
   status: string;
 }
+
+export interface UserInfo {
+  name: string;
+  email: string;
+  id: string;
+}

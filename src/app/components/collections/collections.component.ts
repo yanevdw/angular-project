@@ -2,7 +2,7 @@ import { CollectionDisplayComponent } from './components/collection-display/coll
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { getCookie } from '../../utils/utils';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-collections',
@@ -14,15 +14,29 @@ import { getCookie } from '../../utils/utils';
 export class CollectionsComponent implements OnInit {
   bookshelfId: number | undefined;
   dataService = inject(DataService);
-  bookshelfResult$ = this.dataService.getBookshelf(getCookie());
+  authService = inject(AuthService);
+  loggedInUserId: string | null | undefined = null;
 
   ngOnInit() {
-    let bookshelfSubscription = this.bookshelfResult$.subscribe((bookshelf) => {
-      this.bookshelfId = bookshelf[0].id;
+    this.authService.isUserSet$.subscribe((user) => {
+      if (user) {
+        this.loggedInUserId = this.authService.currentUserSignal()?.id;
+      }
+    });
+
+    const bookshelfResult$ = this.dataService.getBookshelf(
+      this.loggedInUserId ?? '',
+    );
+    let bookshelfSubscription = bookshelfResult$.subscribe((bookshelf) => {
+      this.bookshelfId = bookshelf?.[0]?.id;
     });
     // Unsubscribe after the id has been fetched.
     if (bookshelfSubscription && this.bookshelfId) {
       bookshelfSubscription.unsubscribe();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.authService.isUserSet$.unsubscribe();
   }
 }

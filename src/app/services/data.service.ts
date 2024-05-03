@@ -7,9 +7,8 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { Book, BookShelf } from '../models/states';
+import { BookShelf } from '../models/states';
 import { from, Observable } from 'rxjs';
-import { getCookie } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -28,21 +27,22 @@ export class DataService {
     >;
   }
 
+  // Will potentially use in the future.
+
   // Get the books in a users bookshelf.
-  getBooks(bookshelfId: number) {
-    const booksQuery = query(
-      collection(this.firestore, 'book'),
-      where('bookshelfId', '==', bookshelfId.toString()),
-    );
-    return collectionData(booksQuery) as Observable<Book[]>;
-  }
+  // getBooks(bookshelfId: number) {
+  //   const booksQuery = query(
+  //     collection(this.firestore, 'book'),
+  //     where('bookshelfId', '==', bookshelfId.toString()),
+  //   );
+  //   return collectionData(booksQuery) as Observable<Book[]>;
+  // }
 
   // Create a bookshelf for a new user.
-  createBookshelf() {
-    const userId = getCookie();
+  createBookshelf(userId: string) {
     return from(
       addDoc(collection(this.firestore, 'bookshelf'), {
-        userId: userId.toString(),
+        userId: userId,
       }).then(() => {}),
     );
   }

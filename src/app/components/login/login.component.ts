@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NzFormControlComponent,
   NzFormDirective,
@@ -43,7 +43,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
   loginSubscription: Subscription | undefined;
@@ -68,11 +68,15 @@ export class LoginComponent {
           this.validateForm.get('email')?.value!,
           this.validateForm.get('password')?.value!,
         )
-        .subscribe();
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/home']);
+          },
+        });
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.loginSubscription?.unsubscribe();
   }
 }
