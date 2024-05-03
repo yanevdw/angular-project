@@ -1,23 +1,25 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { routes } from './app.routes';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment.development';
-import {getFirestore, provideFirestore} from "@angular/fire/firestore";
-import { provideStore } from '@ngrx/store';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideEffects } from '@ngrx/effects';
+import { UserEffects } from './store/effects';
+import { provideState, provideStore } from '@ngrx/store';
+import { userFeatureKey, userReducer } from './store/reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom([
-        provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-        provideAuth(() => getAuth()),
-        provideFirestore(() => getFirestore())
+      provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+      provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()),
     ]),
     provideStore(),
-    provideEffects()
-],
-
+    provideState({ name: userFeatureKey, reducer: userReducer }),
+    provideEffects(UserEffects),
+  ],
 };

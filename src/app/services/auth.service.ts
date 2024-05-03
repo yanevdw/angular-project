@@ -9,7 +9,7 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { DataService } from './data.service';
-import { from, Subject } from 'rxjs';
+import { from, map, Observable, Subject } from 'rxjs';
 import { UserInfo } from '../models/states';
 
 @Injectable({
@@ -23,15 +23,24 @@ export class AuthService {
   currentUserSignal = signal<UserInfo | undefined | null>(undefined);
   isUserSet$ = new Subject<boolean>();
 
-  login(email: string, password: string) {
+  login(
+    email: string,
+    password: string,
+  ): Observable<{ name: string; id: string }> {
     return from(
       signInWithEmailAndPassword(
         this.firebaseAuth,
         email.trim(),
         password.trim(),
-      )
-        .then(() => {})
-        .catch((error) => console.error(error)),
+      ),
+    ).pipe(
+      map((user) => {
+        if (user.user.displayName) {
+          return { name: user.user.displayName!, id: user.user.uid };
+        } else {
+          return { name: '', id: user.user.uid };
+        }
+      }),
     );
   }
 
@@ -42,6 +51,7 @@ export class AuthService {
           updateProfile(response.user, { displayName: name });
           this.dataService.createBookshelf(response.user.uid);
           this.router.navigate(['home']);
+          return { name: response.user.displayName!, id: response.user.uid };
         },
       ),
     );
