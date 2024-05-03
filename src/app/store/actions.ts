@@ -35,7 +35,7 @@ export const getRegisterComplete = createAction(
 export const getLogout = createAction('[USER] Get Logout');
 export const getLogoutComplete = createAction('[USER] Get LogoutComplete');
 
-// Might use ate a later stage
+// Might use at a later stage
 //--------------------------------------------------------------------------------------------------------
 // Actions for bookshelf
 // export const getBookshelf = createAction(
