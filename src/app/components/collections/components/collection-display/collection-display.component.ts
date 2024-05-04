@@ -33,23 +33,42 @@ export class CollectionDisplayComponent {
   currentMoods = this.getMoods('currently reading');
   readMoods = this.getMoods('read');
   dnfMoods = this.getMoods('dnf');
-  tbrMoods = this.getMoods('tbr');
 
   currentCategories = this.getCategories('currently reading');
   readCategories = this.getCategories('read');
   dnfCategories = this.getCategories('dnf');
   tbrCategories = this.getCategories('tbr');
 
+  constructor() {}
+
   getAuthorCount(category: string): number {
     let authorArray;
     if (category === 'tbr') {
-      authorArray = this.tbr.map((book: Book) => book.author);
+      let convertedBooks = this.tbr.map((book: Book) => book);
+      let authorArray: string[] = [];
+      for (const book of convertedBooks) {
+        if (authorArray.indexOf(book.author) === -1) {
+          authorArray.push(book.author);
+        }
+      }
       return authorArray.length;
     } else if (category === 'dnf') {
-      authorArray = this.dnf.map((book: Book) => book.author);
+      let convertedBooks = this.dnf.map((book: Book) => book);
+      let authorArray: string[] = [];
+      for (const book of convertedBooks) {
+        if (authorArray.indexOf(book.author) === -1) {
+          authorArray.push(book.author);
+        }
+      }
       return authorArray.length;
     } else if (category === 'read') {
-      authorArray = this.read.map((book: Book) => book.author);
+      let convertedBooks = this.read.map((book: Book) => book);
+      let authorArray: string[] = [];
+      for (const book of convertedBooks) {
+        if (authorArray.indexOf(book.author) === -1) {
+          authorArray.push(book.author);
+        }
+      }
       return authorArray.length;
     }
 
@@ -63,6 +82,8 @@ export class CollectionDisplayComponent {
       return this.dnf.length;
     } else if (category === 'read') {
       return this.read.length;
+    } else if (category === 'currently reading') {
+      return this.currentlyReading.length;
     }
 
     return 0;
@@ -82,31 +103,96 @@ export class CollectionDisplayComponent {
     return '';
   }
 
-  getMoods(category: string): string {
-    if (category === 'tbr') {
-      return this.tbr.map((book: Book) => book.moods[0]);
-    } else if (category === 'dnf') {
-      return this.dnf.map((book: Book) => book.moods[0]);
+  getMoods(category: string): string[] {
+    if (category === 'dnf') {
+      let dnfBooks = this.dnf.map((book: Book) => book);
+      let moods: string[] = [];
+      for (const book of dnfBooks) {
+        for (const mood of book.moods) {
+          if (moods.indexOf(mood) === -1) {
+            moods.push(mood);
+          }
+        }
+      }
+      return moods;
     } else if (category === 'read') {
-      return this.read.map((book: Book) => book.moods[0]);
+      let readBooks = this.read.map((book: Book) => book);
+      let moods: string[] = [];
+      for (const book of readBooks) {
+        for (const mood of book.moods) {
+          if (moods.indexOf(mood) === -1) {
+            moods.push(mood);
+          }
+        }
+      }
+      return moods;
     } else if (category === 'currently reading') {
-      return this.currentlyReading.map((book: Book) => book.moods[0]);
+      let currentlyReadingBooks = this.currentlyReading.map(
+        (book: Book) => book,
+      );
+      let moods: string[] = [];
+      for (const book of currentlyReadingBooks) {
+        if (book.moods) {
+          for (const mood of book.moods) {
+            if (moods.indexOf(mood) === -1) {
+              moods.push(mood);
+            }
+          }
+        }
+      }
+      return moods;
     }
 
-    return '';
+    return [];
   }
 
-  getCategories(category: string): string {
+  getCategories(category: string): string[] {
     if (category === 'tbr') {
-      return this.tbr.map((book: Book) => book.category);
+      let convertedBooks = this.tbr.map((book: Book) => book);
+      let categories: string[] = [];
+      for (const book of convertedBooks) {
+        if (book.category) {
+          if (categories.indexOf(book.category) === -1) {
+            categories.push(book.category);
+          }
+        }
+      }
+      return categories;
     } else if (category === 'dnf') {
-      return this.dnf.map((book: Book) => book.category);
+      let convertedBooks = this.dnf.map((book: Book) => book);
+      let categories: string[] = [];
+      for (const book of convertedBooks) {
+        if (book.category) {
+          if (categories.indexOf(book.category) === -1) {
+            categories.push(book.category);
+          }
+        }
+      }
+      return categories;
     } else if (category === 'read') {
-      return this.read.map((book: Book) => book.category);
+      let convertedBooks = this.read.map((book: Book) => book);
+      let categories: string[] = [];
+      for (const book of convertedBooks) {
+        if (book.category) {
+          if (categories.indexOf(book.category) === -1) {
+            categories.push(book.category);
+          }
+        }
+      }
+      return categories;
     } else if (category === 'currently reading') {
-      return this.currentlyReading.map((book: Book) => book.category);
+      let convertedBooks = this.currentlyReading.map((book: Book) => book);
+      let categories: string[] = [];
+      for (const book of convertedBooks) {
+        if (book.category) {
+          if (categories.indexOf(book.category) === -1) {
+            categories.push(book.category);
+          }
+        }
+      }
+      return categories;
     }
 
-    return '';
+    return [];
   }
 }

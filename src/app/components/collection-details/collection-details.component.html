@@ -1,9 +1,11 @@
 <div class="w-full h-full flex flex-col justify-center items-start">
-  <h2 class="font-tilt-neon text-2xl py-4 text-pale-brown">
-    {{ selectedCollection?.replace("-", " ")?.toUpperCase() }}
-  </h2>
+  @if (selectedCollection) {
+    <h2 class="font-tilt-neon text-2xl py-4 text-pale-brown font-bold">
+      {{ selectedCollection.length < 4 ? selectedCollection.toUpperCase() : selectedCollection.substring(0, 1).toUpperCase() + selectedCollection.substring(1, selectedCollection.length) }}
+    </h2>
+  }
   <div
-    class="books-container w-full h-full overlow-x-hidden overflow-y-scroll flex flex-row flex-wrap gap-4 justify-start items-center content-start"
+    class="books-container w-full h-full overflow-x-hidden overflow-y-scroll flex flex-row flex-wrap gap-4 justify-start items-center content-start"
   >
 
     @if (selectedCollection?.replace("-", " ") === "currently reading") {
@@ -13,82 +15,89 @@
           class="book-container w-[30%] h-[35%] flex flex-col"
         >
           <div
-            class="bg-transparent  w-full h-full rounded-md sm:w-1/5"
+            class="bg-transparent w-full h-full rounded-md sm:w-1/5"
           >
             <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
           </div>
-          <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-            {{ book.title }}
-          </p>
+          <div class="basis-1/2 align-self-end flex flex-col justify-center">
+            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+            </p>
 
-          <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-            {{ book.author }}
-          </p>
+            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+              {{ book.author }}
+            </p>
+          </div>
         </div>
 
       }
-    } @else if (selectedCollection?.replace("-", " ") === "read") {
+    } @else if (selectedCollection === "read") {
       @for (book of read; track book.title) {
         <div
           [routerLink]="['book/' + book.isbn ]"
           class="book-container w-[30%] h-[35%] flex flex-col"
         >
           <div
-            class="bg-transparent w-full h-full rounded-md sm:w-1/5"
+            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
+            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
           </div>
-          <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-            {{ book.title }}
-          </p>
+          <div class="basis-1/2 align-self-end flex flex-col justify-center">
+            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+              {{ book.title.length > 15 ? book.title.slice(0, 10) + "..." : book.title }}
+            </p>
 
-          <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-            {{ book.author }}
-          </p>
+            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+              {{ book.author }}
+            </p>
+          </div>
         </div>
 
       }
-    } @else if (selectedCollection?.replace("-", " ") === "tbr") {
+    } @else if (selectedCollection === "tbr") {
       @for (book of tbr; track book.title) {
         <div
           [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col"
+          class="book-container w-[30%] h-[35%] flex flex-col justify-between"
         >
           <div
-            class="bg-transparent  w-full h-full rounded-md sm:w-1/5"
+            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
+            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
           </div>
-          <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-            {{ book.title }}
-          </p>
+          <div class="basis-1/2 align-self-end flex flex-col justify-center">
+            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+            </p>
 
-          <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-            {{ book.author }}
-          </p>
+            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+              {{ book.author }}
+            </p>
+          </div>
         </div>
 
       }
-    } @else if (selectedCollection?.replace("-", " ") === "dnf") {
+    } @else if (selectedCollection === "dnf") {
       @for (book of dnf; track book.title) {
         <div
           [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col"
+          class="book-container w-[30%] h-[35%] flex flex-col justify-between"
         >
           <div
-            class="bg-transparent  w-full h-full rounded-md sm:w-1/5"
+            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
+            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
           </div>
-          <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-            {{ book.title }}
-          </p>
+          <div class="basis-1/2 align-self-end flex flex-col justify-center">
+            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+            </p>
 
-          <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-            {{ book.author }}
-          </p>
+            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+              {{ book.author }}
+            </p>
+          </div>
         </div>
-
       }
     }
   </div>

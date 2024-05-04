@@ -32,31 +32,35 @@
           book.description
         }}
       </p>
-      <p
-        class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-      >
-        Moods
-      </p>
+      @if (book.moods[0] != "") {
+        <p
+          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+        >
+          Moods
+        </p>
 
-      @for (mood of book.moods; track mood) {
+        @for (mood of book.moods; track mood) {
+          <p
+            class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+          >
+            {{ mood }}
+          </p>
+        }
+      }
+
+      @if (book.pace != "") {
+        <p
+          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+        >
+          Pace
+        </p>
+
         <p
           class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
         >
-          {{ mood }}
+          {{ book.pace }}
         </p>
       }
-
-      <p
-        class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-      >
-        Pace
-      </p>
-
-      <p
-        class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-      >
-        {{ book.pace }}
-      </p>
       <p
         class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
       >
@@ -67,22 +71,22 @@
       >
         {{ book.status }}
       </p>
-      <p
-        class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-      >
-        Comments
-      </p>
-      @for (comment of book.comments; track comment) {
-        <div
-          class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
+      @if (book.comments[0] != "") {
+        <p
+          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
         >
-          @for (comment of book.comments; track comment) {
-            <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
-          }
-        </div>
+          Comments
+        </p>
+        @for (comment of book.comments; track comment) {
+          <div
+            class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
+          >
+            @for (comment of book.comments; track comment) {
+              <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
+            }
+          </div>
+        }
       }
-
     }
-
   </div>
 </div>

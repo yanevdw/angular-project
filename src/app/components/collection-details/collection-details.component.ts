@@ -11,7 +11,7 @@ import { Book } from '../../models/states';
 })
 export class CollectionDetailsComponent {
   activeRoute = inject(ActivatedRoute);
-
+  selectedCollection = this.activeRoute.snapshot.paramMap.get('collectionName');
   currentBooks = JSON.parse(localStorage.getItem('books') as string);
   currentlyReading = this.currentBooks.filter(
     (book: Book) => book.bookshelf_category === 'currently reading',
@@ -25,9 +25,6 @@ export class CollectionDetailsComponent {
   read = this.currentBooks.filter(
     (book: Book) => book.bookshelf_category === 'read',
   );
-
-  selectedCollection = this.activeRoute.snapshot.paramMap.get('collectionName');
-
   books = [
     { title: 'Divergent', author: 'Veronica Roth' },
     { title: 'Insurgent', author: 'Veronica Roth' },
@@ -35,4 +32,8 @@ export class CollectionDetailsComponent {
     { title: 'Four', author: 'Veronica Roth' },
     { title: 'Chain of Gold', author: 'Cassandra Clare' },
   ];
+
+  constructor() {
+    this.selectedCollection = this.selectedCollection?.replace('-', ' ') ?? '';
+  }
 }

@@ -58,8 +58,7 @@
         class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
       >
         @if (category === "currently reading") {
-
-          @if (!currentMoods) {
+          @if (currentMoods[0] !== '') {
             @for (mood of currentMoods; track mood) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
@@ -78,22 +77,12 @@
           }
         } @else if (category === "tbr") {
 
-          @if (!tbrMoods) {
-            @for (mood of tbrMoods; track mood) {
-              <div
-                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
-              >
-                {{ mood }}
-              </div>
-            }
-          } @else {
-            @for (bookCategory of tbrCategories; track bookCategory) {
-              <div
-                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
-              >
-                {{ bookCategory.toLowerCase() }}
-              </div>
-            }
+          @for (bookCategory of tbrCategories; track bookCategory) {
+            <div
+              class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+            >
+              {{ bookCategory.toLowerCase() }}
+            </div>
           }
         } @else if (category === "dnf") {
 
