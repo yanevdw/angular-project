@@ -32,9 +32,7 @@ export const routes: Routes = [
         component: CollectionDetailsComponent,
       },
       {
-        //  Will be used later.
-        // path: 'collection/:collectionName/book/:bookIsbn',
-        path: 'collection/:collectionName/book',
+        path: 'collection/:collectionName/book/:bookIsbn',
         component: BookComponent,
       },
       {
