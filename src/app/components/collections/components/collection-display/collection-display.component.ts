@@ -98,13 +98,13 @@ export class CollectionDisplayComponent {
 
   getCategories(category: string): string {
     if (category === 'tbr') {
-      return this.tbr.map((book: Book) => book.category[0]);
+      return this.tbr.map((book: Book) => book.category);
     } else if (category === 'dnf') {
-      return this.dnf.map((book: Book) => book.category[0]);
+      return this.dnf.map((book: Book) => book.category);
     } else if (category === 'read') {
-      return this.read.map((book: Book) => book.category[0]);
+      return this.read.map((book: Book) => book.category);
     } else if (category === 'currently reading') {
-      return this.currentlyReading.map((book: Book) => book.category[0]);
+      return this.currentlyReading.map((book: Book) => book.category);
     }
 
     return '';

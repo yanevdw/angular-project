@@ -72,14 +72,14 @@ export class StatsComponent {
         let catFrequency = 0;
 
         for (const storedBook of this.currentBooks) {
-          if (book.category[0] === storedBook.category[0]) {
+          if (book.category === storedBook.category) {
             catFrequency++;
           }
         }
 
         if (catFrequency >= count) {
           count = catFrequency;
-          favouriteCategory = book.category[0];
+          favouriteCategory = book.category;
         }
       }
     }
