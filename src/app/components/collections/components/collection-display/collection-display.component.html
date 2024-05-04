@@ -1,7 +1,55 @@
 <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
   <div
-    class="bg-transparent border border-white w-[32%] h-full rounded-md sm:w-1/5"
-  ></div>
+    class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+  >
+    @if (category === "currently reading") {
+      <img alt="Book Cover Image" [src]='currentCoverUrl'
+           class="object-fit h-full w-full rounded-md">
+    } @else if (category === "tbr") {
+      @if (tbr.length < 4) {
+        <img alt="Book Cover Image" [src]='tbrCoverUrl'
+             class="object-fit h-full w-full rounded-md">
+      } @else {
+        <img alt="Book Cover Image" [src]='tbrCoverUrl[0]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
+        <img alt="Book Cover Image" [src]='tbrCoverUrl[1]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
+        <img alt="Book Cover Image" [src]='tbrCoverUrl[2]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
+        <img alt="Book Cover Image" [src]='tbrCoverUrl[3]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
+      }
+
+    } @else if (category === "read") {
+      @if (read.length < 4) {
+        <img alt="Book Cover Image" [src]='readCoverUrl'
+             class="object-fit h-full w-full rounded-md">
+      } @else {
+        <img alt="Book Cover Image" [src]='readCoverUrl[0]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
+        <img alt="Book Cover Image" [src]='readCoverUrl[1]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
+        <img alt="Book Cover Image" [src]='readCoverUrl[2]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
+        <img alt="Book Cover Image" [src]='readCoverUrl[3]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
+      }
+    } @else if (category === "dnf") {
+      @if (dnf.length < 4) {
+        <img alt="Book Cover Image" [src]='dnfCoverUrl'
+             class="object-fit h-full w-full rounded-md">
+      } @else {
+        <img alt="Book Cover Image" [src]='dnfCoverUrl[0]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
+        <img alt="Book Cover Image" [src]='dnfCoverUrl[1]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
+        <img alt="Book Cover Image" [src]='dnfCoverUrl[2]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
+        <img alt="Book Cover Image" [src]='dnfCoverUrl[3]'
+             class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
+      }
+    }
+  </div>
   <div
     class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
   >
@@ -9,44 +57,115 @@
       <div
         class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
       >
-        @for (genre of mockGenres; track genre) {
-        <div
-          class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
-        >
-          {{ genre }}
-        </div>
+        @if (category === "currently reading") {
+
+          @if (!currentMoods) {
+            @for (mood of currentMoods; track mood) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ mood }}
+              </div>
+            }
+          } @else {
+            @for (bookCategory of currentCategories; track bookCategory) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ bookCategory.toLowerCase() }}
+              </div>
+            }
+          }
+        } @else if (category === "tbr") {
+
+          @if (!tbrMoods) {
+            @for (mood of tbrMoods; track mood) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ mood }}
+              </div>
+            }
+          } @else {
+            @for (bookCategory of tbrCategories; track bookCategory) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ bookCategory.toLowerCase() }}
+              </div>
+            }
+          }
+        } @else if (category === "dnf") {
+
+          @if (dnfMoods) {
+            @for (mood of dnfMoods; track mood) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ mood }}
+              </div>
+            }
+          } @else {
+            @for (bookCategory of dnfCategories; track bookCategory) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ category }}
+              </div>
+            }
+          }
+        } @else if (category === "read") {
+
+          @if (readMoods) {
+            @for (mood of readMoods; track mood) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ mood }}
+              </div>
+            }
+          } @else {
+            @for (bookCategory of readCategories; track bookCategory) {
+              <div
+                class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+              >
+                {{ category }}
+              </div>
+            }
+          }
         }
       </div>
       <h2
         class="font-tilt-neon text-white text-2xl font-semibold mt-2 text-nowrap"
       >
-        {{ category }}
+        {{ category.toUpperCase() }}
       </h2>
-      @if (category !== "Currently reading") {
-      <h3 class="font-tilt-neon font-extralight text-white text-md">
-        6 authors
-      </h3>
+      @if (category !== "currently reading") {
+        <h3 class="font-tilt-neon font-extralight text-white text-md">
+          {{ getAuthorCount(category) }} authors
+        </h3>
       } @else {
-      <h3 class="font-tilt-neon font-extralight text-white text-md">
-        Cassandra Clare
-      </h3>
+        <h3 class="font-tilt-neon font-extralight text-white text-md">
+          {{ currentlyReading[0].author }}
+        </h3>
       }
     </div>
 
     <div class="pages-left-container align-bottom">
-      @if (category !== "Currently reading") {
-      <p
-        class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
-      >
-        14 <span class="text-sm font-tilt-neon">books</span>
-      </p>
+      @if (category !== "currently reading") {
+        <p
+          class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+        >
+          {{ getTotalBooks(category) }} <span
+          class="text-sm font-tilt-neon"> {{ getTotalBooks(category) == 1 ? "book" : "books" }}</span>
+        </p>
       } @else {
-      <p
-        class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
-      >
-        200
-        <span class="text-sm font-tilt-neon">pages left</span>
-      </p>
+        <p
+          class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+        >
+          {{ currentlyReading[0].pages_read }}
+          <span class="text-sm font-tilt-neon">pages read</span>
+        </p>
       }
     </div>
   </div>

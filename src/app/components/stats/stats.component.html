@@ -66,7 +66,7 @@
             <p class="text-white w-full text-center">
               You have read a total of
             </p>
-            <p class="text-white font-semibold text-4xl">20</p>
+            <p class="text-white font-semibold text-4xl">{{ read.length }}</p>
             <p class="text-white">books.</p>
           </div>
         </div>
@@ -79,31 +79,32 @@
         class="pages-read-container bg-amaranth rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
       >
         <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📃</p>
-        <p class="text-white">You have read a total of 1000 pages</p>
+        <p class="text-white">You have read a total of {{ calculateTotalPagesRead() }} pages</p>
       </div>
       <div
         class="prefered-pace-container bg-mantis-green rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
       >
         <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⚡️</p>
-        <p class="text-white">You prefer moderately-paced books.</p>
+        <p class="text-white">You prefer {{ calculateFavouritePace() }} paced books.</p>
       </div>
       <div
         class="preferred-genre-container bg-indigo-dye rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
       >
         <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📚</p>
-        <p class="text-white">You prefer moderately-paced books.</p>
+        <p class="text-white">You prefer {{ calculateFavouriteCategory() }} books.</p>
       </div>
+      <!--      Reserved for future use-->
+      <!--      <div-->
+      <!--        class="prefered-mood-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"-->
+      <!--      >-->
+      <!--        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">😃</p>-->
+      <!--        <p class="text-white">You prefer funny books.</p>-->
+      <!--      </div>-->
       <div
-        class="prefered-mood-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
-      >
-        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">😃</p>
-        <p class="text-white">You prefer funny books.</p>
-      </div>
-      <div
-        class="average-rating-container bg-old-gold rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+        class="average-rating-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
       >
         <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⭐️</p>
-        <p class="text-white">Your average rating is 4 stars.</p>
+        <p class="text-white">Your average rating is {{ calculateAverageRating() }} stars.</p>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Book } from '../../models/states';
 
 @Component({
   selector: 'app-collection-details',
@@ -10,6 +11,20 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 })
 export class CollectionDetailsComponent {
   activeRoute = inject(ActivatedRoute);
+
+  currentBooks = JSON.parse(localStorage.getItem('books') as string);
+  currentlyReading = this.currentBooks.filter(
+    (book: Book) => book.bookshelf_category === 'currently reading',
+  );
+  tbr = this.currentBooks.filter(
+    (book: Book) => book.bookshelf_category === 'tbr',
+  );
+  dnf = this.currentBooks.filter(
+    (book: Book) => book.bookshelf_category === 'dnf',
+  );
+  read = this.currentBooks.filter(
+    (book: Book) => book.bookshelf_category === 'read',
+  );
 
   selectedCollection = this.activeRoute.snapshot.paramMap.get('collectionName');
 
