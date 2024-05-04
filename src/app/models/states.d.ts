@@ -18,6 +18,8 @@ export interface Book {
   pages_read?: number;
   rating: number;
   status: string;
+  bookshelf_category: string;
+  category: string;
 }
 
 export interface UserInfo {
