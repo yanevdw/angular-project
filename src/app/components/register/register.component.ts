@@ -18,7 +18,10 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
-import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { CurrentUserState } from '../../store/reducer';
+import { getRegister } from '../../store/actions';
+import { selectedUser } from '../../store/selectors';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -42,8 +45,9 @@ import { Subscription } from 'rxjs';
 })
 export class RegisterComponent {
   router = inject(Router);
-  authService = inject(AuthService);
-  registerSubscription: Subscription | undefined;
+  store = inject(Store<CurrentUserState>);
+  register$ = this.store.select(selectedUser);
+  registerSubscription: Subscription | undefined = undefined;
   validateForm: FormGroup<{
     name: FormControl<string>;
     email: FormControl<string>;
@@ -84,17 +88,19 @@ export class RegisterComponent {
         this.validateForm.get('email') &&
         this.validateForm.get('password')
       ) {
-        const name = this.validateForm.get('name')?.value!;
-        const email = this.validateForm.get('email')?.value!;
-        const password = this.validateForm.get('password')?.value!;
+        const newUserName = this.validateForm.get('name')?.value ?? '';
+        const newUserEmail = this.validateForm.get('email')?.value ?? '';
+        const newUserPassword = this.validateForm.get('password')?.value ?? '';
 
-        this.registerSubscription = this.authService
-          .register(name, email, password)
-          .subscribe({
-            next: () => {
-              this.router.navigate(['/home']);
-            },
-          });
+        this.store.dispatch(
+          getRegister({
+            name: newUserName,
+            email: newUserEmail,
+            password: newUserPassword,
+          }),
+        );
+
+        this.registerSubscription = this.register$.subscribe();
       }
     }
   }

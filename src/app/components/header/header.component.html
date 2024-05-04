@@ -4,15 +4,26 @@
   <div
     class="user-container h-full w-full flex justify-start items-center gap-2"
   >
+    @if ((loggedInUserInfo$ | async)?.name !== "") {
+      <p
+        class="bg-seasalt w-fit h-fit rounded-3xl px-3 py-1.5 text-xl font-pacifico text-pale-brown"
+      >
+        {{ (loggedInUserInfo$ | async)?.name?.charAt(0) }}
+      </p>
+      <p class="font-tilt-neon font-semibold text-lg text-pale-brown">
+        Hi {{ (loggedInUserInfo$ | async)?.name }}
+      </p>
+    } @else {
+      <p
+        class="bg-seasalt w-fit h-fit rounded-3xl px-3 py-1.5 text-xl font-pacifico text-pale-brown"
+      >
+        {{ currentUserName ? currentUserName.charAt(0) : "" }}
+      </p>
+      <p class="font-tilt-neon font-semibold text-lg text-pale-brown">
+        Hi {{ currentUserName ? currentUserName : "" }}
 
-    <p
-      class="bg-seasalt w-fit h-fit rounded-3xl px-3 py-1.5 text-xl font-pacifico text-pale-brown"
-    >
-      {{ loggedInUser ? loggedInUser.charAt(0) : "" }}
-    </p>
-    <p class="font-tilt-neon font-semibold text-lg text-pale-brown">
-      Hi {{ loggedInUser ? loggedInUser : "" }}
-    </p>
+      </p>
+    }
 
 
   </div>
