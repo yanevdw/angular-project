@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  getLogin,
-  getLoginComplete,
-  getLogout,
-  getLogoutComplete,
-  getRegister,
-  getRegisterComplete,
+  getBooks,
+  getBooksComplete,
+  getBookshelf,
+  getBookshelfComplete,
 } from './actions';
 import { AuthService } from '../services/auth.service';
 import { catchError, EMPTY, map, retry, switchMap } from 'rxjs';
+import { DataService } from '../services/data.service';
 
 @Injectable()
 export class UserEffects {
-  getlogin$ = createEffect(() =>
+  getBookshelf$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getLogin.type),
-      switchMap((action: { email: string; password: string }) =>
-        this.authService.login(action.email, action.password).pipe(
-          map(({ name, id }) => getLoginComplete({ name, id })),
-          retry(1),
+      ofType(getBookshelf.type),
+      switchMap((action: { userId: string }) =>
+        this.dataService.getBookshelf(action.userId).pipe(
+          map((response) =>
+            getBookshelfComplete({ bookshelfId: response[0].id.toString() }),
+          ),
           catchError((error) => {
             console.error(
-              'An unexpected error occurred while trying to log you in: ',
+              'An unexpected error occurred while trying to get your bookshelf: ',
               error,
             );
             return EMPTY;
@@ -32,37 +32,16 @@ export class UserEffects {
     ),
   );
 
-  getRegister$ = createEffect(() =>
+  getBooks$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getRegister.type),
-      switchMap((action: { name: string; email: string; password: string }) =>
-        this.authService
-          .register(action.name, action.email, action.password)
-          .pipe(
-            map(({ name, id }) => getRegisterComplete({ name, id })),
-            retry(1),
-            catchError((error) => {
-              console.error(
-                'An unexpected error occurred while trying to register you: ',
-                error,
-              );
-              return EMPTY;
-            }),
-          ),
-      ),
-    ),
-  );
-
-  getLogout$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getLogout.type),
-      switchMap(() =>
-        this.authService.logout().pipe(
-          map(() => getLogoutComplete()),
+      ofType(getBooks.type),
+      switchMap((action: { bookshelfId: string }) =>
+        this.dataService.filterBooks(action.bookshelfId).pipe(
+          map((response) => getBooksComplete({ books: response })),
           retry(1),
           catchError((error) => {
             console.error(
-              'An unexpected error occurred while trying to log you out: ',
+              'An unexpected error occurred while trying to get your bookshelf: ',
               error,
             );
             return EMPTY;
@@ -75,5 +54,6 @@ export class UserEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private dataService: DataService,
   ) {}
 }
