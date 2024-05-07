@@ -1,198 +1,73 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { CurrentBookshelfState } from '../../../../store/reducer';
+import { selectedBookshelf } from '../../../../store/selectors';
 import { Book } from '../../../../models/states';
+import { AsyncPipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-collection-display',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './collection-display.component.html',
   styleUrl: './collection-display.component.scss',
 })
-export class CollectionDisplayComponent {
+export class CollectionDisplayComponent implements OnInit, OnDestroy {
   @Input() category = '';
+  bookStore = inject(Store<CurrentBookshelfState>);
+  currentBooks$ = this.bookStore.select(selectedBookshelf);
+  bookshelfSubscription: Subscription | undefined = undefined;
 
-  currentBooks = JSON.parse(localStorage.getItem('books') as string);
-  currentlyReading = this.currentBooks.filter(
-    (book: Book) => book.bookshelf_category === 'currently reading',
-  );
-  tbr = this.currentBooks.filter(
-    (book: Book) => book.bookshelf_category === 'tbr',
-  );
-  dnf = this.currentBooks.filter(
-    (book: Book) => book.bookshelf_category === 'dnf',
-  );
-  read = this.currentBooks.filter(
-    (book: Book) => book.bookshelf_category === 'read',
-  );
-  currentCoverUrl = this.getCoverImage('currently reading');
-  readCoverUrl = this.getCoverImage('read');
-  dnfCoverUrl = this.getCoverImage('dnf');
-  tbrCoverUrl = this.getCoverImage('tbr');
-
-  currentMoods = this.getMoods('currently reading');
-  readMoods = this.getMoods('read');
-  dnfMoods = this.getMoods('dnf');
-
-  currentCategories = this.getCategories('currently reading');
-  readCategories = this.getCategories('read');
-  dnfCategories = this.getCategories('dnf');
-  tbrCategories = this.getCategories('tbr');
-
-  constructor() {}
-
-  getAuthorCount(category: string): number {
-    let authorArray;
-    if (category === 'tbr') {
-      let convertedBooks = this.tbr.map((book: Book) => book);
-      let authorArray: string[] = [];
-      for (const book of convertedBooks) {
-        if (authorArray.indexOf(book.author) === -1) {
-          authorArray.push(book.author);
-        }
-      }
-      return authorArray.length;
-    } else if (category === 'dnf') {
-      let convertedBooks = this.dnf.map((book: Book) => book);
-      let authorArray: string[] = [];
-      for (const book of convertedBooks) {
-        if (authorArray.indexOf(book.author) === -1) {
-          authorArray.push(book.author);
-        }
-      }
-      return authorArray.length;
-    } else if (category === 'read') {
-      let convertedBooks = this.read.map((book: Book) => book);
-      let authorArray: string[] = [];
-      for (const book of convertedBooks) {
-        if (authorArray.indexOf(book.author) === -1) {
-          authorArray.push(book.author);
-        }
-      }
-      return authorArray.length;
-    }
-
-    return 0;
+  ngOnInit() {
+    this.bookshelfSubscription = this.currentBooks$.subscribe();
   }
 
-  getTotalBooks(category: string): number {
-    if (category === 'tbr') {
-      return this.tbr.length;
-    } else if (category === 'dnf') {
-      return this.dnf.length;
-    } else if (category === 'read') {
-      return this.read.length;
-    } else if (category === 'currently reading') {
-      return this.currentlyReading.length;
+  getAuthorCount(books: Book[]): number {
+    let authorArray: string[] = [];
+    for (const book of books) {
+      if (authorArray.indexOf(book.author) === -1) {
+        authorArray.push(book.author);
+      }
     }
-
-    return 0;
+    return authorArray.length;
   }
 
-  getCoverImage(category: string): string {
-    if (category === 'tbr') {
-      return this.tbr.map((book: Book) => book.cover_url);
-    } else if (category === 'dnf') {
-      return this.dnf.map((book: Book) => book.cover_url);
-    } else if (category === 'read') {
-      return this.read.map((book: Book) => book.cover_url);
-    } else if (category === 'currently reading') {
-      return this.currentlyReading.map((book: Book) => book.cover_url);
+  getCoverImage(books: Book[]): string[] {
+    let covers: string[] = [];
+    for (const book of books) {
+      covers.push(book.cover_url);
     }
 
-    return '';
+    return covers;
   }
 
-  getMoods(category: string): string[] {
-    if (category === 'dnf') {
-      let dnfBooks = this.dnf.map((book: Book) => book);
-      let moods: string[] = [];
-      for (const book of dnfBooks) {
-        for (const mood of book.moods) {
-          if (moods.indexOf(mood) === -1) {
-            moods.push(mood);
-          }
+  getMoods(books: Book[]): string[] {
+    let moods: string[] = [];
+    for (const book of books) {
+      for (const mood of book.moods) {
+        if (moods.indexOf(mood) === -1) {
+          moods.push(mood);
         }
       }
-      return moods;
-    } else if (category === 'read') {
-      let readBooks = this.read.map((book: Book) => book);
-      let moods: string[] = [];
-      for (const book of readBooks) {
-        for (const mood of book.moods) {
-          if (moods.indexOf(mood) === -1) {
-            moods.push(mood);
-          }
-        }
-      }
-      return moods;
-    } else if (category === 'currently reading') {
-      let currentlyReadingBooks = this.currentlyReading.map(
-        (book: Book) => book,
-      );
-      let moods: string[] = [];
-      for (const book of currentlyReadingBooks) {
-        if (book.moods) {
-          for (const mood of book.moods) {
-            if (moods.indexOf(mood) === -1) {
-              moods.push(mood);
-            }
-          }
-        }
-      }
-      return moods;
     }
-
-    return [];
+    return moods;
   }
 
-  getCategories(category: string): string[] {
-    if (category === 'tbr') {
-      let convertedBooks = this.tbr.map((book: Book) => book);
-      let categories: string[] = [];
-      for (const book of convertedBooks) {
-        if (book.category) {
-          if (categories.indexOf(book.category) === -1) {
-            categories.push(book.category);
-          }
+  getCategories(books: Book[]): string[] {
+    let categories: string[] = [];
+    for (const book of books) {
+      if (book.category) {
+        if (categories.indexOf(book.category) === -1) {
+          categories.push(book.category);
         }
       }
-      return categories;
-    } else if (category === 'dnf') {
-      let convertedBooks = this.dnf.map((book: Book) => book);
-      let categories: string[] = [];
-      for (const book of convertedBooks) {
-        if (book.category) {
-          if (categories.indexOf(book.category) === -1) {
-            categories.push(book.category);
-          }
-        }
-      }
-      return categories;
-    } else if (category === 'read') {
-      let convertedBooks = this.read.map((book: Book) => book);
-      let categories: string[] = [];
-      for (const book of convertedBooks) {
-        if (book.category) {
-          if (categories.indexOf(book.category) === -1) {
-            categories.push(book.category);
-          }
-        }
-      }
-      return categories;
-    } else if (category === 'currently reading') {
-      let convertedBooks = this.currentlyReading.map((book: Book) => book);
-      let categories: string[] = [];
-      for (const book of convertedBooks) {
-        if (book.category) {
-          if (categories.indexOf(book.category) === -1) {
-            categories.push(book.category);
-          }
-        }
-      }
-      return categories;
     }
+    return categories;
+  }
 
-    return [];
+  ngOnDestroy(): void {
+    this.bookshelfSubscription?.unsubscribe();
   }
 }

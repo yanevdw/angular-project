@@ -2,50 +2,50 @@
   <div
     class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
   >
-    @if (category === "currently reading") {
-      <img alt="Book Cover Image" [src]='currentCoverUrl'
+    @if (category === "currently reading" && (currentBooks$ | async)?.bookshelf!.currentlyReading) {
+      <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[0]'
            class="object-fit h-full w-full rounded-md">
-    } @else if (category === "tbr") {
-      @if (tbr.length < 4) {
-        <img alt="Book Cover Image" [src]='tbrCoverUrl'
+    } @else if (category === "tbr" && (currentBooks$ | async)?.bookshelf!.tbr) {
+      @if ((currentBooks$ | async)?.bookshelf!.tbr.length < 4) {
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.tbr)[0]'
              class="object-fit h-full w-full rounded-md">
       } @else {
-        <img alt="Book Cover Image" [src]='tbrCoverUrl[0]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.tbr)[0]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
-        <img alt="Book Cover Image" [src]='tbrCoverUrl[1]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.tbr)[1]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
-        <img alt="Book Cover Image" [src]='tbrCoverUrl[2]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.tbr)[2]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
-        <img alt="Book Cover Image" [src]='tbrCoverUrl[3]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.tbr)[3]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
       }
 
-    } @else if (category === "read") {
-      @if (read.length < 4) {
-        <img alt="Book Cover Image" [src]='readCoverUrl'
+    } @else if (category === "read" && (currentBooks$ | async)?.bookshelf!.read) {
+      @if ((currentBooks$ | async)?.bookshelf!.read.length < 4) {
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.read)[0]'
              class="object-fit h-full w-full rounded-md">
       } @else {
-        <img alt="Book Cover Image" [src]='readCoverUrl[0]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.read)[0]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
-        <img alt="Book Cover Image" [src]='readCoverUrl[1]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.read)[1]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
-        <img alt="Book Cover Image" [src]='readCoverUrl[2]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.read)[2]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
-        <img alt="Book Cover Image" [src]='readCoverUrl[3]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.read)[3]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
       }
-    } @else if (category === "dnf") {
-      @if (dnf.length < 4) {
-        <img alt="Book Cover Image" [src]='dnfCoverUrl'
+    } @else if (category === "dnf" && (currentBooks$ | async)?.bookshelf!.dnf) {
+      @if ((currentBooks$ | async)?.bookshelf!.dnf.length < 4) {
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.dnf)[0]'
              class="object-fit h-full w-full rounded-md">
       } @else {
-        <img alt="Book Cover Image" [src]='dnfCoverUrl[0]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.dnf)[0]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
-        <img alt="Book Cover Image" [src]='dnfCoverUrl[1]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.dnf)[1]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
-        <img alt="Book Cover Image" [src]='dnfCoverUrl[2]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.dnf)[2]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
-        <img alt="Book Cover Image" [src]='dnfCoverUrl[3]'
+        <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.dnf)[3]'
              class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
       }
     }
@@ -57,9 +57,10 @@
       <div
         class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
       >
-        @if (category === "currently reading") {
-          @if (currentMoods[0] !== '') {
-            @for (mood of currentMoods; track mood) {
+        @if (category === "currently reading" && (currentBooks$ | async)?.bookshelf!.currentlyReading) {
+          @if (getMoods((currentBooks$ | async)!.bookshelf.currentlyReading).length > 1) {
+
+            @for (mood of getMoods((currentBooks$ | async)!.bookshelf.currentlyReading); track mood) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -67,7 +68,7 @@
               </div>
             }
           } @else {
-            @for (bookCategory of currentCategories; track bookCategory) {
+            @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.currentlyReading); track bookCategory) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -75,19 +76,19 @@
               </div>
             }
           }
-        } @else if (category === "tbr") {
+        } @else if (category === "tbr" && (currentBooks$ | async)?.bookshelf!.tbr) {
 
-          @for (bookCategory of tbrCategories; track bookCategory) {
+          @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.tbr); track bookCategory) {
             <div
               class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
             >
               {{ bookCategory.toLowerCase() }}
             </div>
           }
-        } @else if (category === "dnf") {
+        } @else if (category === "dnf" && (currentBooks$ | async)?.bookshelf!.dnf) {
 
-          @if (dnfMoods) {
-            @for (mood of dnfMoods; track mood) {
+          @if (getMoods((currentBooks$ | async)!.bookshelf.dnf) !== [""]) {
+            @for (mood of getMoods((currentBooks$ | async)!.bookshelf.dnf); track mood) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -95,7 +96,7 @@
               </div>
             }
           } @else {
-            @for (bookCategory of dnfCategories; track bookCategory) {
+            @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.dnf); track bookCategory) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -103,10 +104,10 @@
               </div>
             }
           }
-        } @else if (category === "read") {
+        } @else if (category === "read" && (currentBooks$ | async)?.bookshelf!.read) {
 
-          @if (readMoods) {
-            @for (mood of readMoods; track mood) {
+          @if (getMoods((currentBooks$ | async)!.bookshelf.read) !== [""]) {
+            @for (mood of getMoods((currentBooks$ | async)!.bookshelf.read); track mood) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -114,7 +115,7 @@
               </div>
             }
           } @else {
-            @for (bookCategory of readCategories; track bookCategory) {
+            @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.read); track bookCategory) {
               <div
                 class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
               >
@@ -131,28 +132,65 @@
       </h2>
       @if (category !== "currently reading") {
         <h3 class="font-tilt-neon font-extralight text-white text-md">
-          {{ getAuthorCount(category) }} authors
+          @if (category === "tbr" && (currentBooks$ | async)?.bookshelf!.tbr) {
+            {{ getAuthorCount((currentBooks$ | async)!.bookshelf.tbr) }} authors
+          } @else if (category === "dnf" && (currentBooks$ | async)?.bookshelf!.dnf) {
+            {{ getAuthorCount((currentBooks$ | async)!.bookshelf.dnf) }} authors
+          } @else if (category === "read" && (currentBooks$ | async)?.bookshelf!.read) {
+            {{ getAuthorCount((currentBooks$ | async)!.bookshelf.read) }} authors
+          }
         </h3>
       } @else {
-        <h3 class="font-tilt-neon font-extralight text-white text-md">
-          {{ currentlyReading[0].author }}
-        </h3>
+        @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
+          <h3 class="font-tilt-neon font-extralight text-white text-md">
+            {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].author }}
+          </h3>
+
+        }
       }
     </div>
 
     <div class="pages-left-container align-bottom">
       @if (category !== "currently reading") {
-        <p
-          class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
-        >
-          {{ getTotalBooks(category) }} <span
-          class="text-sm font-tilt-neon"> {{ getTotalBooks(category) == 1 ? "book" : "books" }}</span>
-        </p>
+        @if (category === "tbr" && (currentBooks$ | async)?.bookshelf!.tbr) {
+          <p
+            class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+          >
+            {{ (currentBooks$ | async)!.bookshelf.tbr.length }}
+            <span
+              class="text-sm font-tilt-neon"> {{ (currentBooks$ | async)!.bookshelf.tbr.length == 1 ? "book" : "books" }}
+            </span>
+          </p>
+
+
+        } @else if (category === "dnf" && (currentBooks$ | async)?.bookshelf!.dnf) {
+          <p
+            class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+          >
+            {{ (currentBooks$ | async)!.bookshelf.dnf.length }}
+            <span
+              class="text-sm font-tilt-neon"> {{ (currentBooks$ | async)!.bookshelf.dnf.length == 1 ? "book" : "books" }}
+            </span>
+          </p>
+        } @else if (category === "read" && (currentBooks$ | async)?.bookshelf!.read) {
+          <p
+            class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+          >
+            {{ (currentBooks$ | async)!.bookshelf.read.length }}
+            <span
+              class="text-sm font-tilt-neon"> {{ (currentBooks$ | async)!.bookshelf.read.length == 1 ? "book" : "books" }}
+            </span>
+          </p>
+        }
+
       } @else {
         <p
           class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
         >
-          {{ currentlyReading[0].pages_read }}
+          @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
+            {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].pages_read }}
+          }
+
           <span class="text-sm font-tilt-neon">pages read</span>
         </p>
       }

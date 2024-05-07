@@ -1,9 +1,13 @@
 import { CollectionDisplayComponent } from './components/collection-display/collection-display.component';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { CurrentBookshelfState } from '../../store/reducer';
+import { selectedBookshelf } from '../../store/selectors';
+import { getBooks, getBookshelf } from '../../store/actions';
 
 @Component({
   selector: 'app-collections',
@@ -12,41 +16,27 @@ import { take } from 'rxjs';
   templateUrl: './collections.component.html',
   styleUrl: './collections.component.scss',
 })
-export class CollectionsComponent {
+export class CollectionsComponent implements OnInit, OnDestroy {
   bookshelfId: number | undefined = undefined;
   dataService = inject(DataService);
   authService = inject(AuthService);
   loggedInUserId: string | undefined = undefined;
-  books: string[] = [];
+  store = inject(Store<CurrentBookshelfState>);
+  bookshelf$ = this.store.select(selectedBookshelf);
 
-  constructor() {
+  ngOnInit() {
     this.authService.isUserSet$.pipe(take(1)).subscribe((user) => {
       if (user) {
-        this.loggedInUserId = this.authService.currentUserSignal()?.id;
-
-        const bookshelfResult$ = this.dataService.getBookshelf(
-          this.loggedInUserId ?? '',
-        );
-
-        let bookshelfSubscription = bookshelfResult$.subscribe((bookshelf) => {
-          if (bookshelf) {
-            this.bookshelfId = bookshelf?.[0]?.id;
-
-            const booksResult$ = this.dataService.getBooks(this.bookshelfId);
-            booksResult$.subscribe((booksResult) => {
-              localStorage.setItem('books', JSON.stringify(booksResult));
-            });
-          }
-        });
-
-        if (localStorage.getItem('books')) {
-          this.books = JSON.parse(localStorage.getItem('books') as string);
+        const userId = this.authService.currentUserSignal()?.id;
+        if (userId) {
+          this.store.dispatch(getBookshelf({ userId: userId }));
         }
+      }
+    });
 
-        // Unsubscribe after the id has been fetched.
-        if (bookshelfSubscription && this.bookshelfId) {
-          bookshelfSubscription.unsubscribe();
-        }
+    this.bookshelf$.pipe(take(2)).subscribe((bookshelf) => {
+      if (bookshelf && bookshelf.bookshelfId !== '') {
+        this.store.dispatch(getBooks({ bookshelfId: bookshelf.bookshelfId }));
       }
     });
   }

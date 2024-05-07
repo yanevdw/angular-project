@@ -9,95 +9,106 @@
   >
 
     @if (selectedCollection?.replace("-", " ") === "currently reading") {
-      @for (book of currentlyReading; track book.title) {
-        <div
-          [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col"
-        >
+      @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
+        @for (book of (currentBooks$ | async)!.bookshelf!.currentlyReading; track book.title) {
           <div
-            class="bg-transparent w-full h-full rounded-md sm:w-1/5"
+            [routerLink]="['book/' + book.isbn ]"
+            class="book-container w-[30%] h-[35%] flex flex-col"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
-          </div>
-          <div class="basis-1/2 align-self-end flex flex-col justify-center">
-            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
-            </p>
+            <div
+              class="bg-transparent w-full h-full rounded-md sm:w-1/5"
+            >
+              <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover">
+            </div>
+            <div class="basis-1/2 align-self-end flex flex-col justify-center">
+              <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+                {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+              </p>
 
-            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-              {{ book.author }}
-            </p>
+              <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+                {{ book.author }}
+              </p>
+            </div>
           </div>
-        </div>
 
+        }
       }
+
     } @else if (selectedCollection === "read") {
-      @for (book of read; track book.title) {
-        <div
-          [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col"
-        >
+      @if ((currentBooks$ | async)?.bookshelf!.read) {
+
+        @for (book of (currentBooks$ | async)!.bookshelf!.read; track book.title) {
           <div
-            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
+            [routerLink]="['book/' + book.isbn ]"
+            class="book-container w-[30%] h-[35%] flex flex-col"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
-          </div>
-          <div class="basis-1/2 align-self-end flex flex-col justify-center">
-            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-              {{ book.title.length > 15 ? book.title.slice(0, 10) + "..." : book.title }}
-            </p>
+            <div
+              class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
+            >
+              <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
+            </div>
+            <div class="basis-1/2 align-self-end flex flex-col justify-center">
+              <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+                {{ book.title.length > 15 ? book.title.slice(0, 10) + "..." : book.title }}
+              </p>
 
-            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-              {{ book.author }}
-            </p>
+              <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+                {{ book.author }}
+              </p>
+            </div>
           </div>
-        </div>
 
+        }
       }
     } @else if (selectedCollection === "tbr") {
-      @for (book of tbr; track book.title) {
-        <div
-          [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col justify-between"
-        >
+      @if ((currentBooks$ | async)?.bookshelf!.tbr) {
+        @for (book of (currentBooks$ | async)!.bookshelf!.tbr; track book.title) {
           <div
-            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
+            [routerLink]="['book/' + book.isbn ]"
+            class="book-container w-[30%] h-[35%] flex flex-col justify-between"
           >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
-          </div>
-          <div class="basis-1/2 align-self-end flex flex-col justify-center">
-            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
-            </p>
+            <div
+              class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
+            >
+              <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
+            </div>
+            <div class="basis-1/2 align-self-end flex flex-col justify-center">
+              <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+                {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+              </p>
 
-            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-              {{ book.author }}
-            </p>
+              <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+                {{ book.author }}
+              </p>
+            </div>
           </div>
-        </div>
 
+        }
       }
-    } @else if (selectedCollection === "dnf") {
-      @for (book of dnf; track book.title) {
-        <div
-          [routerLink]="['book/' + book.isbn ]"
-          class="book-container w-[30%] h-[35%] flex flex-col justify-between"
-        >
-          <div
-            class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
-          >
-            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
-          </div>
-          <div class="basis-1/2 align-self-end flex flex-col justify-center">
-            <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
-              {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
-            </p>
 
-            <p class="text-wrap font-tilt-neon text-amaranth text-sm">
-              {{ book.author }}
-            </p>
+    } @else if (selectedCollection === "dnf") {
+      @if ((currentBooks$ | async)?.bookshelf!.dnf) {
+        @for (book of (currentBooks$ | async)!.bookshelf!.dnf; track book.title) {
+          <div
+            [routerLink]="['book/' + book.isbn ]"
+            class="book-container w-[30%] h-[35%] flex flex-col justify-between"
+          >
+            <div
+              class="bg-transparent  w-full h-[70%] rounded-md sm:w-1/5 basis-1/2"
+            >
+              <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md object-cover w-full h-full">
+            </div>
+            <div class="basis-1/2 align-self-end flex flex-col justify-center">
+              <p class="text-wrap font-tilt-neon text-pale-brown font-bold text-lg">
+                {{ book.title.length > 12 ? book.title.slice(0, 10) + "..." : book.title }}
+              </p>
+
+              <p class="text-wrap font-tilt-neon text-amaranth text-sm">
+                {{ book.author }}
+              </p>
+            </div>
           </div>
-        </div>
+        }
       }
     }
   </div>

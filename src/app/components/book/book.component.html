@@ -1,92 +1,98 @@
 <div class="w-full h-full flex justify-center">
-  <div
-    class="bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
-  >
-    @for (book of bookDetails; track book.isbn) {
-      <div
-        class="w-full h-1/2 flex flex-col justify-center items-center align-center gap-0"
-      >
+  @if (bookResult$) {
+    <div
+      class="bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
+    >
+      @for (book of (bookResult$ | async); track book.isbn) {
         <div
-          class="w-1/2 h-4/5 rounded-lg flex justify-self-center self-center"
-        ><img alt="Book COver Image" [src]=book.cover_url class="rounded-md"></div>
-        <p
-          class="font-tilt-neon h-fit w-fit text-pale-brown text-lg text-center font-semibold"
+          class="w-full h-1/2 flex flex-col justify-center items-center align-center gap-0"
         >
-          {{ book.title }}
-        </p>
-        <p class="font-tilt-neon h-fit w-fit text-amaranth text-sm">
-          {{ book.author }}
-        </p>
-        <p class="font-tilt-neon h-fit w-fit text-pale-brown text-md">
-          {{ book.pages }} pages
-        </p>
-      </div>
+          <div
+            class="w-1/2 h-4/5 rounded-lg flex justify-self-center self-center"
+          >
+            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md">
 
-      <p
-        class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-      >
-        Synopsis
-      </p>
-      <p class="w-full h-1/5 font-sans font-light text-pale-brown text-md overflow-y-scroll mb-4">
-        {{
-          book.description
-        }}
-      </p>
-      @if (book.moods[0] != "") {
+          </div>
+          <p
+            class="font-tilt-neon h-fit w-fit text-pale-brown text-lg text-center font-semibold"
+          >
+            {{ book.title }}
+          </p>
+          <p class="font-tilt-neon h-fit w-fit text-amaranth text-sm">
+            {{ book.author }}
+          </p>
+          <p class="font-tilt-neon h-fit w-fit text-pale-brown text-md">
+            {{ book.pages }} pages
+          </p>
+        </div>
+
         <p
           class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
         >
-          Moods
+          Synopsis
         </p>
+        <p class="w-full h-1/5 font-sans font-light text-pale-brown text-md overflow-y-scroll mb-4">
+          {{
+            book.description
+          }}
+        </p>
+        @if (book.moods[0] != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          >
+            Moods
+          </p>
 
-        @for (mood of book.moods; track mood) {
+          @for (mood of book.moods; track mood) {
+            <p
+              class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+            >
+              {{ mood }}
+            </p>
+          }
+        }
+
+        @if (book.pace != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          >
+            Pace
+          </p>
+
           <p
             class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
           >
-            {{ mood }}
+            {{ book.pace }}
           </p>
         }
-      }
-
-      @if (book.pace != "") {
         <p
           class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
         >
-          Pace
+          Status
         </p>
-
         <p
           class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
         >
-          {{ book.pace }}
+          {{ book.status }}
         </p>
-      }
-      <p
-        class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-      >
-        Status
-      </p>
-      <p
-        class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-      >
-        {{ book.status }}
-      </p>
-      @if (book.comments[0] != "") {
-        <p
-          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-        >
-          Comments
-        </p>
-        @for (comment of book.comments; track comment) {
-          <div
-            class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
+        @if (book.comments[0] != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
           >
-            @for (comment of book.comments; track comment) {
-              <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
-            }
-          </div>
+            Comments
+          </p>
+          @for (comment of book.comments; track comment) {
+            <div
+              class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
+            >
+              @for (comment of book.comments; track comment) {
+                <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
+              }
+            </div>
+          }
         }
       }
-    }
-  </div>
+    </div>
+  }
+
 </div>

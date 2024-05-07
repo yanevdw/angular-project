@@ -1,38 +1,32 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { Subscription } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Book } from '../../models/states';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { heroArrowLeftEndOnRectangle } from '@ng-icons/heroicons/outline';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [],
+  imports: [NgIconComponent, AsyncPipe],
+  viewProviders: [provideIcons({ heroArrowLeftEndOnRectangle })],
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss',
 })
-export class BookComponent implements OnDestroy {
+export class BookComponent implements OnInit, OnDestroy {
   activeRoute = inject(ActivatedRoute);
   selectedBook = this.activeRoute.snapshot.paramMap.get('bookIsbn');
   dataService = inject(DataService);
-  bookResult$ = this.dataService.getBook(this.selectedBook ?? '');
-  bookSubscription: Subscription | undefined = undefined;
+  bookResult$: Observable<Book[]> | undefined;
   book: string[] | undefined = undefined;
   bookDetails: Book[] | undefined = undefined;
 
-  constructor() {
-    this.bookSubscription = this.bookResult$.subscribe((book) => {
-      localStorage.setItem('selectedbook', JSON.stringify(book));
-    });
-
-    this.book = JSON.parse(localStorage.getItem('selectedbook') as string);
-    this.bookDetails = this.book?.map((book) => {
-      return book as unknown as Book;
-    });
+  ngOnInit() {
+    this.bookResult$ = this.dataService.getBook(this.selectedBook ?? '');
+    this.bookResult$.pipe(take(2)).subscribe();
   }
 
-  ngOnDestroy() {
-    this.bookSubscription?.unsubscribe();
-    localStorage.removeItem('selectedbook');
-  }
+  ngOnDestroy() {}
 }
