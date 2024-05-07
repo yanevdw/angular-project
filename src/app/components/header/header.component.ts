@@ -3,10 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangle } from '@ng-icons/heroicons/outline';
 import { Router } from '@angular/router';
-import { CurrentUserState } from '../../store/reducer';
-import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
-import { getLogout } from '../../store/actions';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,9 +17,8 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
-  store = inject(Store<CurrentUserState>);
   loggedInUserInfo$ = this.authService.currentUser$;
-  logoutSubscription: Subscription | undefined = undefined;
+
   userSubscription: Subscription | undefined = undefined;
 
   constructor() {
@@ -31,13 +27,10 @@ export class HeaderComponent implements OnDestroy {
   }
 
   handleLogOutClick() {
-    this.store.dispatch(getLogout());
-    this.logoutSubscription = this.loggedInUserInfo$.subscribe();
-    console.log(this.logoutSubscription);
+    this.authService.logout();
   }
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
-    this.logoutSubscription?.unsubscribe();
   }
 }
