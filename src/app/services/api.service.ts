@@ -11,7 +11,6 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getBooks(bookName: string) {
-    console.log(this.http.get<Results>(this.baseUrl + bookName));
     return this.http.get<Results>(this.baseUrl + bookName);
   }
 }
