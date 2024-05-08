@@ -21,14 +21,14 @@
       </button>
     </form>
   </div>
-  <div class="search-results-container w-full h-[85%] overflow-y-scroll" id="search-results-container">
+  <div class="search-results-container w-full h-[85%] overflow-y-scroll oveflow-x-hidden" id="search-results-container">
     @if (searchedItems) {
       <div class="flex flex-col gap-4 h-full">
         @for (item of searchedItems; track item.title) {
           <label class="bg-seasalt w-full h-1/4 flex flex-row gap-4 rounded-lg p-2"
                  (click)="handleBookClick(item);addBookModal.show()">
-            @if (item.imageLinks?.thumbnail) {
-              <img [src]=item.imageLinks?.thumbnail alt="Book Cover Image" class="rounded-md w-1/4 h-full">
+            @if (item.imageLinks!.thumbnail) {
+              <img [src]=item.imageLinks!.thumbnail alt="Book Cover Image" class="rounded-md w-1/4 h-full">
             } @else {
               <img src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg" alt="Book Cover Default Image"
                    class="rounded-md w-1/4 h-full">
@@ -39,7 +39,7 @@
                   <div class="flex flex-row w-full justify-between">
                     <p class="text-pale-brown font-tilt-neon text-lg font-semibold">{{ item.title }}</p>
                     <ng-icon
-                      class="font-extrabold text-3xl text-pale-brown flex justify-center items-center  md:invisible hover:cursor-pointer"
+                      class="font-extrabold text-3xl mr-4 text-pale-brown flex justify-center items-center  md:invisible hover:cursor-pointer"
                       name="matTouchAppOutline"></ng-icon>
                   </div>
 
@@ -48,10 +48,10 @@
                   </label>
                 </div>
 
-                <div class="flex overflow-x-scroll gap-2">
+                <div class="book-info-pills-container flex overflow-x-scroll gap-2 w-9/10">
                   @if (item.pageCount) {
                     <label
-                      class="w-fit h-fit bg-indigo-dye font-tilt-neon text-white text-sm rounded-2xl text-nowrap px-2.5 py-1.5">
+                      class="w-fit h-fit bg-indigo-dye font-tilt-neon text-white text-sm rounded-2xl text-nowrap  px-2.5 py-1.5">
                       {{ item.pageCount }} pages
                     </label>
                   }

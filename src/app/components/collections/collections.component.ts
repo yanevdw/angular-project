@@ -1,7 +1,6 @@
 import { CollectionDisplayComponent } from './components/collection-display/collection-display.component';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -18,9 +17,7 @@ import { getBooks, getBookshelf } from '../../store/actions';
 })
 export class CollectionsComponent implements OnInit, OnDestroy {
   bookshelfId: number | undefined = undefined;
-  dataService = inject(DataService);
   authService = inject(AuthService);
-  loggedInUserId: string | undefined = undefined;
   store = inject(Store<CurrentBookshelfState>);
   bookshelf$ = this.store.select(selectedBookshelf);
 
