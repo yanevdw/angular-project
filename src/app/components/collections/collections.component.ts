@@ -1,8 +1,12 @@
 import { CollectionDisplayComponent } from './components/collection-display/collection-display.component';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
+import { take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { CurrentBookshelfState } from '../../store/reducer';
+import { selectedBookshelf } from '../../store/selectors';
+import { getBooks, getBookshelf } from '../../store/actions';
 
 @Component({
   selector: 'app-collections',
@@ -11,29 +15,27 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './collections.component.html',
   styleUrl: './collections.component.scss',
 })
-export class CollectionsComponent implements OnInit {
-  bookshelfId: number | undefined;
-  dataService = inject(DataService);
+export class CollectionsComponent implements OnInit, OnDestroy {
+  bookshelfId: number | undefined = undefined;
   authService = inject(AuthService);
-  loggedInUserId: string | null | undefined = null;
+  store = inject(Store<CurrentBookshelfState>);
+  bookshelf$ = this.store.select(selectedBookshelf);
 
   ngOnInit() {
-    this.authService.isUserSet$.subscribe((user) => {
+    this.authService.isUserSet$.pipe(take(1)).subscribe((user) => {
       if (user) {
-        this.loggedInUserId = this.authService.currentUserSignal()?.id;
+        const userId = this.authService.currentUserSignal()?.id;
+        if (userId) {
+          this.store.dispatch(getBookshelf({ userId: userId }));
+        }
       }
     });
 
-    const bookshelfResult$ = this.dataService.getBookshelf(
-      this.loggedInUserId ?? '',
-    );
-    let bookshelfSubscription = bookshelfResult$.subscribe((bookshelf) => {
-      this.bookshelfId = bookshelf?.[0]?.id;
+    this.bookshelf$.pipe(take(2)).subscribe((bookshelf) => {
+      if (bookshelf && bookshelf.bookshelfId !== '') {
+        this.store.dispatch(getBooks({ bookshelfId: bookshelf.bookshelfId }));
+      }
     });
-    // Unsubscribe after the id has been fetched.
-    if (bookshelfSubscription && this.bookshelfId) {
-      bookshelfSubscription.unsubscribe();
-    }
   }
 
   ngOnDestroy(): void {

@@ -1,30 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  getLoginComplete,
-  getLogoutComplete,
-  getRegisterComplete,
-} from './actions';
+import { getBooksComplete, getBookshelfComplete } from './actions';
+import { Bookshelf } from '../models/states';
 
-export interface CurrentUserState {
-  name: string;
-  id: string;
+export interface CurrentBookshelfState {
+  bookshelfId: string;
+  books: Bookshelf;
 }
 
-export const userFeatureKey = 'user';
-const initialUserState: CurrentUserState = {
-  name: '',
-  id: '',
+export const bookshelfFeatureKey = 'bookshelf';
+const initialBookshelfState: CurrentBookshelfState = {
+  bookshelfId: '',
+  books: {} as Bookshelf,
 };
 
-export const userReducer = createReducer(
-  initialUserState,
-  on(getLoginComplete, (state, { name, id }) => {
-    return { ...state, name, id };
+export const bookshelfReducer = createReducer(
+  initialBookshelfState,
+  on(getBookshelfComplete, (state, { bookshelfId }) => {
+    return { ...state, bookshelfId };
   }),
-  on(getRegisterComplete, (state, { name, id }) => {
-    return { ...state, name, id };
-  }),
-  on(getLogoutComplete, (state) => {
-    return { ...state, name: '', id: '' };
+  on(getBooksComplete, (state, { books }) => {
+    return { ...state, books };
   }),
 );

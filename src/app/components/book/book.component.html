@@ -1,77 +1,98 @@
 <div class="w-full h-full flex justify-center">
-  <div
-    class="bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
-  >
+  @if (bookResult$) {
     <div
-      class="w-full h-1/2 flex flex-col justify-center items-center align-center gap-0"
+      class="bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
     >
-      <div
-        class="border border-pale-brown w-1/2 h-4/5 rounded-lg flex justify-self-center self-center"
-      ></div>
-      <p
-        class="font-tilt-neon h-fit w-fit text-pale-brown text-lg text-center font-semibold"
-      >
-        Title
-      </p>
-      <p class="font-tilt-neon h-fit w-fit text-amaranth text-sm">
-        Book Author
-      </p>
-      <p class="font-tilt-neon h-fit w-fit text-pale-brown text-md">
-        600 pages
-      </p>
-    </div>
+      @for (book of (bookResult$ | async); track book.isbn) {
+        <div
+          class="w-full h-1/2 flex flex-col justify-center items-center align-center gap-0"
+        >
+          <div
+            class="w-1/2 h-4/5 rounded-lg flex justify-self-center self-center"
+          >
+            <img alt="Book Cover Image" [src]=book.cover_url class="rounded-md">
 
-    <p
-      class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-    >
-      Synopsis
-    </p>
-    <p class="w-full h-1/5 font-sans font-light text-pale-brown text-md">
-      This is the description of a very good book that should definitely be
-      read. This book has a captivating plot with several unexpected and
-      unpredictable twists and great character development.
-    </p>
-    <p
-      class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-    >
-      Mood
-    </p>
-    <p
-      class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-    >
-      Joy
-    </p>
-    <p
-      class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-    >
-      Pace
-    </p>
-    <p
-      class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-    >
-      Fast
-    </p>
-    <p
-      class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-    >
-      Status
-    </p>
-    <p
-      class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-    >
-      Completed
-    </p>
-    <p
-      class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-    >
-      Comments
-    </p>
-    <div
-      class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
-    >
-      @for (comment of mockComments; track comment){
-      <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
+          </div>
+          <p
+            class="font-tilt-neon h-fit w-fit text-pale-brown text-lg text-center font-semibold"
+          >
+            {{ book.title }}
+          </p>
+          <p class="font-tilt-neon h-fit w-fit text-amaranth text-sm">
+            {{ book.author }}
+          </p>
+          <p class="font-tilt-neon h-fit w-fit text-pale-brown text-md">
+            {{ book.pages }} pages
+          </p>
+        </div>
+
+        <p
+          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+        >
+          Synopsis
+        </p>
+        <p class="w-full h-1/5 font-sans font-light text-pale-brown text-md overflow-y-scroll mb-4">
+          {{
+            book.description
+          }}
+        </p>
+        @if (book.moods[0] != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          >
+            Moods
+          </p>
+
+          @for (mood of book.moods; track mood) {
+            <p
+              class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+            >
+              {{ mood }}
+            </p>
+          }
+        }
+
+        @if (book.pace != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          >
+            Pace
+          </p>
+
+          <p
+            class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+          >
+            {{ book.pace }}
+          </p>
+        }
+        <p
+          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+        >
+          Status
+        </p>
+        <p
+          class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+        >
+          {{ book.status }}
+        </p>
+        @if (book.comments[0] != "") {
+          <p
+            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          >
+            Comments
+          </p>
+          @for (comment of book.comments; track comment) {
+            <div
+              class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
+            >
+              @for (comment of book.comments; track comment) {
+                <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
+              }
+            </div>
+          }
+        }
       }
     </div>
-  </div>
+  }
+
 </div>

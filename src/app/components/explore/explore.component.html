@@ -1,0 +1,87 @@
+<div class="w-full h-full flex flex-col gap-4">
+  <div class="search-container w-full">
+    <form
+      (ngSubmit)="handleSearchClick()"
+      [formGroup]="searchForm"
+      class="w-full h-1/5 flex flex-row justify-between">
+      <label
+        class="w-[75%] input rounded-3xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none">
+        <svg class="w-4 h-4 opacity-70" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path clip-rule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                fill-rule="evenodd"/>
+        </svg>
+        <input class="grow" formControlName="searchTerm" placeholder="Search for a book" type="text"/>
+
+      </label>
+      <button
+        class="btn w-1/5 bg-amaranth text-lg font-tilt-neon text-white font-semibold hover:cursor-pointer select:shadow-md"
+        type="submit">
+        Search
+      </button>
+    </form>
+  </div>
+  <div class="search-results-container w-full h-[85%] overflow-y-scroll oveflow-x-hidden" id="search-results-container">
+    @if (searchedItems) {
+      <div class="flex flex-col gap-4 h-full">
+        @for (item of searchedItems; track item.title) {
+          <label class="bg-seasalt w-full h-1/4 flex flex-row gap-4 rounded-lg p-2"
+                 (click)="handleBookClick(item);addBookModal.show()">
+            @if (item.imageLinks!.thumbnail) {
+              <img [src]=item.imageLinks!.thumbnail alt="Book Cover Image" class="rounded-md w-1/4 h-full">
+            } @else {
+              <img src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg" alt="Book Cover Default Image"
+                   class="rounded-md w-1/4 h-full">
+            }
+            <div class="search-item-info flex flex-col h-full w-full">
+              <div class="flex flex-col justify-between w-full h-full">
+                <div class="flex flex-col gap-2">
+                  <div class="flex flex-row w-full justify-between">
+                    <p class="text-pale-brown font-tilt-neon text-lg font-semibold">{{ item.title }}</p>
+                    <ng-icon
+                      class="font-extrabold text-3xl mr-4 text-pale-brown flex justify-center items-center  md:invisible hover:cursor-pointer"
+                      name="matTouchAppOutline"></ng-icon>
+                  </div>
+
+                  <label
+                    class="w-fit h-fit px-2 py-1 bg-linen font-tilt-neon text-pale-brown text-sm rounded-xl text-nowrap">{{ item.authors[0] }}
+                  </label>
+                </div>
+
+                <div class="book-info-pills-container flex overflow-x-scroll gap-2 w-9/10">
+                  @if (item.pageCount) {
+                    <label
+                      class="w-fit h-fit bg-indigo-dye font-tilt-neon text-white text-sm rounded-2xl text-nowrap  px-2.5 py-1.5">
+                      {{ item.pageCount }} pages
+                    </label>
+                  }
+                  @if (item.categories) {
+                    <label
+                      class="w-fit h-fit px-2.5 py-1.5 bg-slate-gray font-tilt-neon text-white text-sm rounded-2xl text-nowrap">{{ item.categories[0] }}
+                    </label>
+                  }
+                  @if (item.publishedDate) {
+                    <label
+                      class="w-fit h-fit px-2.5 py-1.5 bg-china-rose font-tilt-neon text-white text-sm rounded-2xl text-nowrap">
+                      {{ item.publishedDate }}
+                    </label>
+                  }
+                </div>
+              </div>
+
+            </div>
+
+          </label>
+        }
+      </div>
+    }
+  </div>
+  <dialog #addBookModal class="w-full h-full bg-transparent">
+    <app-add-book [book]="selectedBook" class="w-full h-full flex justify-center items-center"/>
+  </dialog>
+</div>
+
+
+
+
+
