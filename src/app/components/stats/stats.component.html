@@ -1,111 +1,191 @@
-<div class="w-full h-full flex flex-col justify-center items-center">
-  <div
-    class="body-container w-full h-full flex flex-col justufy-center items-center"
-  >
+@if ((currentBooks$ | async)?.bookshelf!.currentlyReading && (currentBooks$ | async)?.bookshelf!.read && (currentBooks$ | async)?.bookshelf!.tbr && (currentBooks$ | async)?.bookshelf!.dnf) {
+  <div class="w-full h-full flex flex-col justify-center items-center">
     <div
-      class="profile-content-container w-19/20 relative h-full flex flex-col gap-2 justify-start items-center"
+      class="body-container w-full h-full flex flex-col justufy-center items-center"
     >
       <div
-        class="book-total-container relative w-full h-1/5 flex flex-row gap-0 justify-center items-center"
+        class="profile-content-container w-19/20 relative h-full flex flex-col gap-2 justify-start items-center"
       >
         <div
-          class="w-1/3 h-full bg-gradient-to-r from-burnt-sienna via-amaranth to-slate-500 rounded-l-3xl"
-        ></div>
-        <div
-          class="w-1/3 h-full bg-gradient-to-r from-slate-500 via-green-gray to-old-gold flex"
-        ></div>
-        <div
-          class="absolute w-full h-full bg-transparent rounded-xl flex flex-row justify-start items-center"
+          class="book-total-container relative w-full h-1/5 flex flex-row gap-0 justify-center items-center"
         >
           <div
-            class="books-picture-container w-2/5 h-full flex flex-col justify-end"
+            class="w-1/3 h-full bg-gradient-to-r from-burnt-sienna via-amaranth to-slate-500 rounded-l-3xl"
+          ></div>
+          <div
+            class="w-1/3 h-full bg-gradient-to-r from-slate-500 via-green-gray to-old-gold flex"
+          ></div>
+          <div
+            class="absolute w-full h-full bg-transparent rounded-xl flex flex-row justify-start items-center"
           >
             <div
-              class="books-container h-4/5 w-full flex flex-col justify-end items-center overflow-y-hidden flex-nowrap"
+              class="books-picture-container w-2/5 h-full flex flex-col justify-end"
             >
               <div
-                class="bg-amaranth flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
-              >
-                <div class="bg-pink-900 w-[8%] h-full"></div>
-                <div class="bg-pink-900 w-[8%] h-full"></div>
-              </div>
-              <div
-                class="bg-indigo-dye rounded-l-2xl rounded-r-md ml-10 flex justify-end items-center w-3/5 h-[30%]"
+                class="books-container h-4/5 w-full flex flex-col justify-end items-center overflow-y-hidden flex-nowrap"
               >
                 <div
-                  class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
-                ></div>
-              </div>
-              <div
-                class="bg-dull-violet rounded-md ml-6 flex justify-center gap-3 items-center shadow-inner shadow-gray-500 w-3/5 h-[35%]"
-              >
-                <div class="bg-violet-950 w-1/12 h-full"></div>
+                  class="bg-amaranth flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
+                >
+                  <div class="bg-pink-900 w-[8%] h-full"></div>
+                  <div class="bg-pink-900 w-[8%] h-full"></div>
+                </div>
                 <div
-                  class="bg-violet-950 w-2/5 h-7/20 rounded-md lg:rounded-lg"
-                ></div>
-                <div class="bg-violet-950 w-1/12 h-full"></div>
-              </div>
-              <div
-                class="bg-mantis-green flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
-              >
-                <div class="bg-green-800 w-[8%] h-full"></div>
-                <div class="bg-green-800 w-[8%] h-full"></div>
-              </div>
-              <div
-                class="bg-pink-900 rounded-l-3xl ml-4 rounded-r-md flex justify-end items-center w-3/5 h-[30%]"
-              >
+                  class="bg-indigo-dye rounded-l-2xl rounded-r-md ml-10 flex justify-end items-center w-3/5 h-[30%]"
+                >
+                  <div
+                    class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
+                  ></div>
+                </div>
                 <div
-                  class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
-                ></div>
+                  class="bg-dull-violet rounded-md ml-6 flex justify-center gap-3 items-center shadow-inner shadow-gray-500 w-3/5 h-[35%]"
+                >
+                  <div class="bg-violet-950 w-1/12 h-full"></div>
+                  <div
+                    class="bg-violet-950 w-2/5 h-7/20 rounded-md lg:rounded-lg"
+                  ></div>
+                  <div class="bg-violet-950 w-1/12 h-full"></div>
+                </div>
+                <div
+                  class="bg-mantis-green flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
+                >
+                  <div class="bg-green-800 w-[8%] h-full"></div>
+                  <div class="bg-green-800 w-[8%] h-full"></div>
+                </div>
+                <div
+                  class="bg-pink-900 rounded-l-3xl ml-4 rounded-r-md flex justify-end items-center w-3/5 h-[30%]"
+                >
+                  <div
+                    class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
+                  ></div>
+                </div>
               </div>
+            </div>
+            <div
+              class="books-read-info-container h-full w-3/5 flex flex-col justify-center items-center"
+            >
+              <p class="text-white w-full text-center">
+                You have read a total of
+              </p>
+              <p
+                class="text-white font-semibold text-4xl">{{ calculateTotalBooks((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}</p>
+              <p class="text-white">books.</p>
             </div>
           </div>
           <div
-            class="books-read-info-container h-full w-3/5 flex flex-col justify-center items-center"
-          >
-            <p class="text-white w-full text-center">
-              You have read a total of
-            </p>
-            <p class="text-white font-semibold text-4xl">{{ read.length }}</p>
-            <p class="text-white">books.</p>
-          </div>
+            class="w-1/3 h-full bg-gradient-to-r from-old-gold via-burnt-sienna to-amaranth rounded-r-3xl"
+          ></div>
+        </div>
+
+        <div
+          class="pages-read-container bg-amaranth rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+        >
+          <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📃</p>
+          <p class="text-white">You have read a total
+            of {{ calculateTotalPagesRead((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.dnf) }}
+            pages</p>
         </div>
         <div
-          class="w-1/3 h-full bg-gradient-to-r from-old-gold via-burnt-sienna to-amaranth rounded-r-3xl"
-        ></div>
-      </div>
-
-      <div
-        class="pages-read-container bg-amaranth rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
-      >
-        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📃</p>
-        <p class="text-white">You have read a total of {{ calculateTotalPagesRead() }} pages</p>
-      </div>
-      <div
-        class="prefered-pace-container bg-mantis-green rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
-      >
-        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⚡️</p>
-        <p class="text-white">You prefer {{ calculateFavouritePace() }} paced books.</p>
-      </div>
-      <div
-        class="preferred-genre-container bg-indigo-dye rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
-      >
-        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📚</p>
-        <p class="text-white">You prefer {{ calculateFavouriteCategory() }} books.</p>
-      </div>
-      <!--      Reserved for future use-->
-      <!--      <div-->
-      <!--        class="prefered-mood-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"-->
-      <!--      >-->
-      <!--        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">😃</p>-->
-      <!--        <p class="text-white">You prefer funny books.</p>-->
-      <!--      </div>-->
-      <div
-        class="average-rating-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
-      >
-        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⭐️</p>
-        <p class="text-white">Your average rating is {{ calculateAverageRating() }} stars.</p>
+          class="prefered-pace-container bg-mantis-green rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+        >
+          <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⚡️</p>
+          <p class="text-white">You
+            prefer {{ calculateFavouritePace((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
+            paced books.</p>
+        </div>
+        <div
+          class="preferred-genre-container bg-indigo-dye rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+        >
+          <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📚</p>
+          <p class="text-white">You
+            prefer {{ calculateFavouriteCategory((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
+            books.</p>
+        </div>
+        <!--      Reserved for future use-->
+        <!--      <div-->
+        <!--        class="prefered-mood-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"-->
+        <!--      >-->
+        <!--        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">😃</p>-->
+        <!--        <p class="text-white">You prefer funny books.</p>-->
+        <!--      </div>-->
+        <div
+          class="average-rating-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+        >
+          <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⭐️</p>
+          <p class="text-white">Your average rating
+            is {{ calculateAverageRating((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
+            stars.</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+} @else {
+  <div
+    class="book-total-container relative w-full h-1/5 flex flex-row gap-0 justify-center items-center"
+  >
+    <div
+      class="w-1/3 h-full bg-gradient-to-r from-burnt-sienna via-amaranth to-slate-500 rounded-l-3xl"
+    ></div>
+    <div
+      class="w-1/3 h-full bg-gradient-to-r from-slate-500 via-green-gray to-old-gold flex"
+    ></div>
+    <div
+      class="absolute w-full h-full bg-transparent rounded-xl flex flex-row justify-start items-center"
+    >
+      <div
+        class="books-picture-container w-2/5 h-full flex flex-col justify-end"
+      >
+        <div
+          class="books-container h-4/5 w-full flex flex-col justify-end items-center overflow-y-hidden flex-nowrap"
+        >
+          <div
+            class="bg-amaranth flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
+          >
+            <div class="bg-pink-900 w-[8%] h-full"></div>
+            <div class="bg-pink-900 w-[8%] h-full"></div>
+          </div>
+          <div
+            class="bg-indigo-dye rounded-l-2xl rounded-r-md ml-10 flex justify-end items-center w-3/5 h-[30%]"
+          >
+            <div
+              class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
+            ></div>
+          </div>
+          <div
+            class="bg-dull-violet rounded-md ml-6 flex justify-center gap-3 items-center shadow-inner shadow-gray-500 w-3/5 h-[35%]"
+          >
+            <div class="bg-violet-950 w-1/12 h-full"></div>
+            <div
+              class="bg-violet-950 w-2/5 h-7/20 rounded-md lg:rounded-lg"
+            ></div>
+            <div class="bg-violet-950 w-1/12 h-full"></div>
+          </div>
+          <div
+            class="bg-mantis-green flex flex-row justify-center shadow-inner shadow-gray-450 rounded-md w-3/5 h-1/4 gap-14"
+          >
+            <div class="bg-green-800 w-[8%] h-full"></div>
+            <div class="bg-green-800 w-[8%] h-full"></div>
+          </div>
+          <div
+            class="bg-pink-900 rounded-l-3xl ml-4 rounded-r-md flex justify-end items-center w-3/5 h-[30%]"
+          >
+            <div
+              class="bg-linen w-19/20 h-13/20 shadow-inner rounded-l-xl shadow-gray-400 lg:rounded-l-2xl"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="books-read-info-container h-full w-3/5 flex flex-col justify-center items-center"
+      >
+        <p class="text-white w-full text-center">
+          There is no statistics to display currently. Happy reading
+        </p>
+      </div>
+    </div>
+    <div
+      class="w-1/3 h-full bg-gradient-to-r from-old-gold via-burnt-sienna to-amaranth rounded-r-3xl"
+    ></div>
+  </div>
+}
