@@ -8,7 +8,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './store/effects';
 import { provideState, provideStore } from '@ngrx/store';
-import { userFeatureKey, userReducer } from './store/reducer';
+import { bookshelfFeatureKey, bookshelfReducer } from './store/reducer';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +20,8 @@ export const appConfig: ApplicationConfig = {
       provideFirestore(() => getFirestore()),
     ]),
     provideStore(),
-    provideState({ name: userFeatureKey, reducer: userReducer }),
+    provideState({ name: bookshelfFeatureKey, reducer: bookshelfReducer }),
     provideEffects(UserEffects),
+    provideHttpClient(),
   ],
 };

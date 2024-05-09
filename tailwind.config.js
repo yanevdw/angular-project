@@ -17,6 +17,8 @@ module.exports = {
         "dull-violet": "rgb(140, 128, 181)",
         "mantis-green": "rgb(121, 181, 123)",
         "pale-brown": "rgb(118, 92, 84)",
+        "slate-gray": "rgb(116, 115, 143)",
+        "china-rose": "rgb(190, 83, 99)",
       },
       fontFamily: {
         "rouge-script": ['"Rouge Script"', ...defaultTheme.fontFamily.sans],
@@ -35,5 +37,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["light"],
+  },
 };

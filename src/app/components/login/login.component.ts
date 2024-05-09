@@ -20,11 +20,8 @@ import {
 } from '@angular/forms';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
 import { Router, RouterLink } from '@angular/router';
-import { CurrentUserState } from '../../store/reducer';
-import { Store } from '@ngrx/store';
-import { getLogin } from '../../store/actions';
+import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
-import { selectedUser } from '../../store/selectors';
 
 @Component({
   selector: 'app-login',
@@ -48,10 +45,8 @@ import { selectedUser } from '../../store/selectors';
 })
 export class LoginComponent implements OnDestroy {
   router = inject(Router);
-  store = inject(Store<CurrentUserState>);
-  login$ = this.store.select(selectedUser);
-  loginSubscription: Subscription | undefined = undefined;
-
+  authService = inject(AuthService);
+  loginSubscription: Subscription | undefined;
   validateForm: FormGroup<{
     email: FormControl<string>;
     password: FormControl<string>;
@@ -67,18 +62,20 @@ export class LoginComponent implements OnDestroy {
       if (document.getElementById('login-success')) {
         document.getElementById('login-success')!.style.display = 'block';
       }
-      this.store.dispatch(
-        getLogin({
-          email: this.validateForm.get('email')?.value ?? '',
-          password: this.validateForm.get('password')?.value ?? '',
-        }),
-      );
-
-      this.loginSubscription = this.login$.subscribe();
+      this.loginSubscription = this.authService
+        .login(
+          this.validateForm.get('email')?.value!,
+          this.validateForm.get('password')?.value!,
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/home']);
+          },
+        });
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.loginSubscription?.unsubscribe();
   }
 }

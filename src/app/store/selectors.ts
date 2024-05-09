@@ -1,10 +1,13 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CurrentUserState, userFeatureKey } from './reducer';
+import { bookshelfFeatureKey, CurrentBookshelfState } from './reducer';
 
-export const selectFeature =
-  createFeatureSelector<CurrentUserState>(userFeatureKey);
+export const selectBookshelfFeature =
+  createFeatureSelector<CurrentBookshelfState>(bookshelfFeatureKey);
 
-export const selectedUser = createSelector(selectFeature, (state) => ({
-  name: state.name,
-  id: state.id,
-}));
+export const selectedBookshelf = createSelector(
+  selectBookshelfFeature,
+  (state) => ({
+    bookshelfId: state.bookshelfId,
+    bookshelf: state.books,
+  }),
+);

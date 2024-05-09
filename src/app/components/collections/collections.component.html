@@ -6,26 +6,26 @@
     class="currently-reading-container w-19/20 h-1/4 bg-amaranth rounded-xl p-3 flex flex-row"
   >
     <app-collection-display
+      [category]="'currently reading'"
       class="w-full h-full"
-      [category]="'Currently reading'"
     />
   </div>
   <div
     [routerLink]="['collection', 'tbr']"
     class="tbr-container w-19/20 h-1/4 rounded-xl flex flex-row bg-mantis-green p-3"
   >
-    <app-collection-display class="w-full h-full" [category]="'TBR'" />
+    <app-collection-display [category]="'tbr'" class="w-full h-full"/>
   </div>
   <div
     [routerLink]="['collection', 'dnf']"
     class="dnf-container w-19/20 h-1/4 rounded-xl flex flex-row bg-indigo-dye p-3"
   >
-    <app-collection-display class="w-full h-full" [category]="'DNF'" />
+    <app-collection-display [category]="'dnf'" class="w-full h-full"/>
   </div>
   <div
     [routerLink]="['collection', 'read']"
     class="read-container w-19/20 h-1/4 rounded-xl flex flex-row bg-dull-violet p-3"
   >
-    <app-collection-display class="w-full h-full" [category]="'Read'" />
+    <app-collection-display [category]="'read'" class="w-full h-full"/>
   </div>
 </div>

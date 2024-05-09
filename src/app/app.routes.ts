@@ -8,6 +8,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { CollectionDetailsComponent } from './components/collection-details/collection-details.component';
 import { BookComponent } from './components/book/book.component';
+import { ExploreComponent } from './components/explore/explore.component';
 
 export const routes: Routes = [
   {
@@ -32,14 +33,16 @@ export const routes: Routes = [
         component: CollectionDetailsComponent,
       },
       {
-        //  Will be used later.
-        // path: 'collection/:collectionName/book/:bookIsbn',
-        path: 'collection/:collectionName/book',
+        path: 'collection/:collectionName/book/:bookIsbn',
         component: BookComponent,
       },
       {
         path: 'stats',
         component: StatsComponent,
+      },
+      {
+        path: 'explore',
+        component: ExploreComponent,
       },
     ],
   },

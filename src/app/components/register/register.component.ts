@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NzFormControlComponent,
   NzFormDirective,
@@ -18,10 +18,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DesktopGraphicsComponent } from '../desktop-graphics/desktop-graphics.component';
-import { Store } from '@ngrx/store';
-import { CurrentUserState } from '../../store/reducer';
-import { getRegister } from '../../store/actions';
-import { selectedUser } from '../../store/selectors';
+import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -43,11 +40,10 @@ import { Subscription } from 'rxjs';
     RouterLink,
   ],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   router = inject(Router);
-  store = inject(Store<CurrentUserState>);
-  register$ = this.store.select(selectedUser);
-  registerSubscription: Subscription | undefined = undefined;
+  authService = inject(AuthService);
+  registerSubscription: Subscription | undefined;
   validateForm: FormGroup<{
     name: FormControl<string>;
     email: FormControl<string>;
@@ -92,15 +88,13 @@ export class RegisterComponent {
         const newUserEmail = this.validateForm.get('email')?.value ?? '';
         const newUserPassword = this.validateForm.get('password')?.value ?? '';
 
-        this.store.dispatch(
-          getRegister({
-            name: newUserName,
-            email: newUserEmail,
-            password: newUserPassword,
-          }),
-        );
-
-        this.registerSubscription = this.register$.subscribe();
+        this.registerSubscription = this.authService
+          .register(newUserName, newUserEmail, newUserPassword)
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/home']);
+            },
+          });
       }
     }
   }
