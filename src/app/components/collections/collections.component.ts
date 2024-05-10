@@ -2,7 +2,7 @@ import { CollectionDisplayComponent } from './components/collection-display/coll
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CurrentBookshelfState } from '../../store/reducer';
 import { selectedBookshelf } from '../../store/selectors';
@@ -20,6 +20,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
   store = inject(Store<CurrentBookshelfState>);
   bookshelf$ = this.store.select(selectedBookshelf);
+  bookshelfSubscription: Subscription | undefined;
 
   ngOnInit() {
     this.authService.isUserSet$.pipe(take(1)).subscribe((user) => {
@@ -31,15 +32,18 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.bookshelf$.pipe(take(2)).subscribe((bookshelf) => {
-      if (bookshelf && bookshelf.bookshelfId !== '') {
-        localStorage.setItem('bookshelfId', bookshelf.bookshelfId);
-        this.store.dispatch(getBooks({ bookshelfId: bookshelf.bookshelfId }));
-      }
-    });
+    this.bookshelfSubscription = this.bookshelf$
+      .pipe(take(2))
+      .subscribe((bookshelf) => {
+        if (bookshelf && bookshelf.bookshelfId !== '') {
+          localStorage.setItem('bookshelfId', bookshelf.bookshelfId);
+          this.store.dispatch(getBooks({ bookshelfId: bookshelf.bookshelfId }));
+        }
+      });
   }
 
   ngOnDestroy(): void {
+    this.bookshelfSubscription?.unsubscribe();
     this.authService.isUserSet$.unsubscribe();
   }
 }

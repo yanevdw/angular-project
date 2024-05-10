@@ -17,12 +17,12 @@ import {
   NzFormItemComponent,
 } from 'ng-zorro-antd/form';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
-import { DataService } from '../../../../services/data.service';
 import { Store } from '@ngrx/store';
 import { CurrentBookshelfState } from '../../../../store/reducer';
 import { selectedBookshelf } from '../../../../store/selectors';
 import { addBook } from '../../../../store/actions';
 import { calculateBookRating } from '../../../../../utils/shared-functions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-book',
@@ -49,7 +49,7 @@ import { calculateBookRating } from '../../../../../utils/shared-functions';
 export class AddBookComponent {
   @Input() book: VolumeInfo | undefined;
   selectedCategory = '';
-  dataService = inject(DataService);
+  router = inject(Router);
   store = inject(Store<CurrentBookshelfState>);
   bookshelf$ = this.store.select(selectedBookshelf);
 

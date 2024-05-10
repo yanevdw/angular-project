@@ -47,8 +47,6 @@ export class EditBookComponent implements OnInit, OnDestroy {
     fiveStarRating: new FormControl(0),
   });
 
-  // constructor(private currentLocation: Location) {}
-
   ngOnInit() {
     if (this.bookIsbn) {
       this.currentBook$ = this.dataService.getBookId(this.bookIsbn);

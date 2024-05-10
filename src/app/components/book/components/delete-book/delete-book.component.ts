@@ -4,6 +4,7 @@ import { NgIcon } from '@ng-icons/core';
 import { DataService } from '../../../../services/data.service';
 import { Observable, take } from 'rxjs';
 import { Book } from '../../../../models/states';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-delete-book',
@@ -16,6 +17,9 @@ export class DeleteBookComponent implements OnInit {
   @Input() bookIsbn: string | undefined | null;
   dataService = inject(DataService);
   currentBook$: Observable<Book[]> | undefined;
+  router = inject(Router);
+  activeRoute = inject(ActivatedRoute);
+  currentCollection = this.activeRoute.snapshot.paramMap.get('collectionName');
 
   ngOnInit() {
     if (this.bookIsbn) {
@@ -30,8 +34,7 @@ export class DeleteBookComponent implements OnInit {
           this.dataService.deleteBook(result[0].id);
         }
       });
-    } else {
-      //TODO: Add feedback saying the book can't be deleted
+      this.router.navigate(['/home/collection/' + this.currentCollection]);
     }
   }
 }
