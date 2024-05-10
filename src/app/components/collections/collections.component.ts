@@ -33,6 +33,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
     this.bookshelf$.pipe(take(2)).subscribe((bookshelf) => {
       if (bookshelf && bookshelf.bookshelfId !== '') {
+        localStorage.setItem('bookshelfId', bookshelf.bookshelfId);
         this.store.dispatch(getBooks({ bookshelfId: bookshelf.bookshelfId }));
       }
     });
