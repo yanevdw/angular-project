@@ -1,7 +1,7 @@
 @if ((currentBooks$ | async)?.bookshelf!.currentlyReading && (currentBooks$ | async)?.bookshelf!.read && (currentBooks$ | async)?.bookshelf!.tbr && (currentBooks$ | async)?.bookshelf!.dnf) {
   <div class="w-full h-full flex flex-col justify-center items-center">
     <div
-      class="body-container w-full h-full flex flex-col justufy-center items-center"
+      class="body-container w-full h-full flex flex-col justify-center items-center"
     >
       <div
         class="profile-content-container w-19/20 relative h-full flex flex-col gap-2 justify-start items-center"
@@ -64,12 +64,12 @@
             <div
               class="books-read-info-container h-full w-3/5 flex flex-col justify-center items-center"
             >
-              <p class="text-white w-full text-center">
+              <p class="text-white font-tilt-neon w-full text-center text-[15px]">
                 You have read a total of
               </p>
               <p
-                class="text-white font-semibold text-4xl">{{ calculateTotalBooks((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}</p>
-              <p class="text-white">books.</p>
+                class="text-white font-semibold font-tilt-neon text-4xl">{{ calculateTotalBooks((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}</p>
+              <p class="text-white font-tilt-neon text-lg">books.</p>
             </div>
           </div>
           <div
@@ -78,18 +78,18 @@
         </div>
 
         <div
-          class="pages-read-container bg-amaranth rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+          class="pages-read-container bg-dark-amaranth rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2 mt-4"
         >
           <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📃</p>
-          <p class="text-white">You have read a total
+          <p class="text-white font-tilt-neon text-[15px] md:text-lg">You have read a total
             of {{ calculateTotalPagesRead((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.dnf) }}
             pages</p>
         </div>
         <div
-          class="prefered-pace-container bg-mantis-green rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+          class="preferred-pace-container bg-dark-mantis-green rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
         >
           <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⚡️</p>
-          <p class="text-white">You
+          <p class="text-white font-tilt-neon text-[15px] md:text-lg">You
             prefer {{ calculateFavouritePace((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
             paced books.</p>
         </div>
@@ -97,22 +97,16 @@
           class="preferred-genre-container bg-indigo-dye rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
         >
           <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">📚</p>
-          <p class="text-white">You
+          <p class="text-white font-tilt-neon text-[15px] md:text-lg">You
             prefer {{ calculateFavouriteCategory((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
             books.</p>
         </div>
-        <!--      Reserved for future use-->
-        <!--      <div-->
-        <!--        class="prefered-mood-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"-->
-        <!--      >-->
-        <!--        <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">😃</p>-->
-        <!--        <p class="text-white">You prefer funny books.</p>-->
-        <!--      </div>-->
+
         <div
-          class="average-rating-container bg-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
+          class="average-rating-container bg-dark-dull-violet rounded-2xl w-full h-[10%] flex flex-row justify-start gap-4 items-center pl-2"
         >
           <p class="bg-seasalt rounded-3xl w-fit h-fit px-2 py-1 text-2xl">⭐️</p>
-          <p class="text-white">Your average rating
+          <p class="text-white font-tilt-neon text-[15px] md:text-lg">Your average rating
             is {{ calculateAverageRating((currentBooks$ | async)?.bookshelf!.currentlyReading, (currentBooks$ | async)?.bookshelf!.read, (currentBooks$ | async)?.bookshelf!.tbr, (currentBooks$ | async)?.bookshelf!.dnf) }}
             stars.</p>
         </div>
@@ -179,7 +173,7 @@
       <div
         class="books-read-info-container h-full w-3/5 flex flex-col justify-center items-center"
       >
-        <p class="text-white w-full text-center">
+        <p class="text-white w-full text-center font-tilt-neon text-[16px]">
           There is no statistics to display currently. Happy reading
         </p>
       </div>
