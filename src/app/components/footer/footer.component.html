@@ -2,21 +2,24 @@
   <ul class="w-full h-4/5 bg-seasalt flex flex-row justify-center items-center">
     <li
       [routerLink]="['/home']"
-      class="w-1/3 h-full flex justify-center items-center"
+      class="w-1/3 h-full flex flex-col justify-center items-center"
     >
-      Home
+      <ng-icon class="font-extrabold text-2xl text-pale-brown" name="matHome"></ng-icon>
+      <p class="font-tilt-neon text-sm text-pale-brown">Home</p>
     </li>
     <li
       [routerLink]="['explore']"
-      class="w-1/3 h-full flex justify-center items-center"
+      class="w-1/3 h-full flex flex-col justify-center items-center"
     >
-      Explore
+      <ng-icon class="font-extrabold text-2xl text-pale-brown" name="matSearch"></ng-icon>
+      <p class="font-tilt-neon text-sm text-pale-brown">Explore</p>
     </li>
     <li
       [routerLink]="['stats']"
-      class="w-1/3 h-full flex justify-center items-center"
+      class="w-1/3 h-full flex flex-col justify-center items-center"
     >
-      Stats
+      <ng-icon class="font-extrabold text-2xl text-pale-brown" name="matInsertChartOutlined"></ng-icon>
+      <p class="font-tilt-neon text-sm text-pale-brown m-0">Stats</p>
     </li>
   </ul>
 </div>
