@@ -3,7 +3,7 @@
 >
   <div
     [routerLink]="['collection', 'currently-reading']"
-    class="currently-reading-container w-19/20 h-1/4 bg-amaranth rounded-xl p-3 flex flex-row"
+    class="currently-reading-container w-19/20 h-1/4 bg-dark-amaranth rounded-xl flex flex-row p-3"
   >
     <app-collection-display
       [category]="'currently reading'"
@@ -12,7 +12,7 @@
   </div>
   <div
     [routerLink]="['collection', 'tbr']"
-    class="tbr-container w-19/20 h-1/4 rounded-xl flex flex-row bg-mantis-green p-3"
+    class="tbr-container w-19/20 h-1/4 rounded-xl flex flex-row bg-dark-mantis-green p-3"
   >
     <app-collection-display [category]="'tbr'" class="w-full h-full"/>
   </div>
@@ -24,7 +24,7 @@
   </div>
   <div
     [routerLink]="['collection', 'read']"
-    class="read-container w-19/20 h-1/4 rounded-xl flex flex-row bg-dull-violet p-3"
+    class="read-container w-19/20 h-1/4 rounded-xl flex flex-row bg-dark-dull-violet p-3"
   >
     <app-collection-display [category]="'read'" class="w-full h-full"/>
   </div>

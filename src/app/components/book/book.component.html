@@ -1,30 +1,37 @@
 <div class="w-full h-full flex justify-center">
   @if (bookResult$) {
     <div
-      class="bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
+      class="book-display-container bg-seasalt w-19/20 h-full rounded-lg overflow-x-hidden overflow-y-scroll items-center px-3 py-6 flex-none"
     >
+      <a [routerLink]="['../../']"
+         class="bg-linen w-fit h-fit px-2 py-2 rounded-2xl flex justify-center align-center hover:cursor-pointer">
+        <ng-icon class="font-extrabold text-xl text-pale-brown" name="matKeyboardBackspace"></ng-icon>
+      </a>
       @for (book of (bookResult$ | async); track book.isbn) {
         <div
           class="w-full h-1/2 flex flex-col justify-center items-center gap-0"
         >
           <div
-            class="w-1/2 h-[70%] rounded-lg"
+            class="w-1/2 h-[70%] rounded-lg md:w-1/5 mb-2"
           >
             <img alt="Book Cover Image" [src]=book.cover_url class="w-full h-full rounded-md object-fit">
 
           </div>
           <div class="w-full flex flex-col justify-center items-center gap-0">
             <p
-              class="font-tilt-neon h-fit w-fit text-pale-brown text-lg text-center font-semibold m-0"
+              class="font-tilt-neon h-fit w-fit text-pale-brown text-2xl text-center font-semibold m-0"
             >
               {{ book.title }}
             </p>
-            <p class="font-tilt-neon h-fit w-fit text-amaranth text-md font-semibold m-0">
-              {{ book.author }}
-            </p>
-            <p class="font-tilt-neon h-fit w-fit text-pale-brown text-md m-0">
-              {{ book.pages }} pages
-            </p>
+            <div class="w-full flex flex-row gap-2 justify-center">
+              <p
+                class="font-tilt-neon h-fit w-fit text-white bg-indigo-dye rounded-2xl px-2 py-1 text-md font-semibold m-0">
+                {{ book.author }}
+              </p>
+              <p class="font-tilt-neon h-fit w-fit bg-dark-mantis-green rounded-2xl px-2 py-1 text-white text-md m-0">
+                {{ book.pages }} pages
+              </p>
+            </div>
           </div>
         </div>
         <div class="book-buttons py-2 flex flex-row w-full justify-center gap-8">
@@ -47,7 +54,8 @@
         >
           Synopsis
         </p>
-        <p class="w-full h-1/5 font-tilt-neon text-pale-brown text-md overflow-y-scroll mb-4">
+        <p
+          class="book-description-container w-full h-1/5 font-tilt-neon text-pale-brown text-md overflow-y-scroll mb-4">
           {{
             book.description
           }}
@@ -69,31 +77,32 @@
         }
 
         @if (book.pace != "") {
-          <p
-            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
-          >
-            Pace
-          </p>
-
-          <p
-            class="bg-amaranth text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
-          >
-            {{ book.pace }}
-          </p>
+          <div class="pace-container flex flex-col gap-0">
+            <p
+              class="font-tilt-neon h-fit text-pale-brown text-lg font-semibold flex self-start m-0"
+            >
+              Pace
+            </p>
+            <p
+              class="text-white font-tilt-neon bg-dark-dull-violet rounded-2xl px-2 py-1 w-fit flex self-start -mt-2"
+            >
+              {{ book.pace }}
+            </p>
+          </div>
         }
         <p
-          class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+          class="font-tilt-neon h-fit text-pale-brown text-lg font-semibold flex self-start"
         >
           Status
         </p>
         <p
-          class="bg-amaranth font-tilt-neon text-white rounded-3xl w-fit px-2 py-0.5 flex self-start"
+          class="text-white font-tilt-neon bg-dark-amaranth rounded-2xl px-2 py-1 w-fit  flex self-start"
         >
           {{ book.status }}
         </p>
         @if (book.comments[0] != "") {
           <p
-            class="font-tilt-neon h-[5%] text-pale-brown text-lg font-semibold flex self-start"
+            class="font-tilt-neon h-fit text-pale-brown text-lg font-semibold flex self-start"
           >
             Comments
           </p>
@@ -102,7 +111,7 @@
               class="comments-container py-2 h-max w-full flex flex-col gap-2 justify-start items-center align-start"
             >
               @for (comment of book.comments; track comment) {
-                <p class="bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
+                <p class="text-pale-brown font-tilt-neon bg-linen w-full h-fit px-4 py-2 rounded-lg">{{ comment }}</p>
               }
             </div>
           }
