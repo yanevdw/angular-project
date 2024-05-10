@@ -20,6 +20,7 @@ export interface Book {
   status: string;
   bookshelf_category: string;
   category: string;
+  id: string;
 }
 
 export interface UserInfo {

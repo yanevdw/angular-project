@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  addBook,
+  deleteBook,
   getBooks,
   getBooksComplete,
   getBookshelf,
   getBookshelfComplete,
+  updateBook,
 } from './actions';
 import { AuthService } from '../services/auth.service';
-import { catchError, EMPTY, map, retry, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, of, retry, switchMap } from 'rxjs';
 import { DataService } from '../services/data.service';
+import { Book } from '../models/states';
 
 @Injectable()
 export class UserEffects {
@@ -48,6 +52,45 @@ export class UserEffects {
           }),
         ),
       ),
+    ),
+  );
+
+  addBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addBook.type),
+      switchMap((action: { book: Book; bookshelfId: string }) => {
+        this.dataService.addBook(action.book, action.bookshelfId);
+
+        return of(getBooks({ bookshelfId: action.bookshelfId }));
+      }),
+    ),
+  );
+
+  updateBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBook.type),
+      switchMap(
+        (action: { bookId: string; book: Book; bookshelfId: string }) => {
+          this.dataService.updateBook(
+            action.bookId,
+            action.book,
+            action.bookshelfId,
+          );
+
+          return of(getBooks({ bookshelfId: action.bookshelfId }));
+        },
+      ),
+    ),
+  );
+
+  deleteBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteBook.type),
+      switchMap((action: { bookId: string; bookshelfId: string }) => {
+        this.dataService.deleteBook(action.bookId);
+
+        return of(getBooks({ bookshelfId: action.bookshelfId }));
+      }),
     ),
   );
 

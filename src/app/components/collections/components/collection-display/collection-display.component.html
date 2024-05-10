@@ -1,12 +1,23 @@
 @if (category === "currently reading") {
   @if ((currentBooks$ | async)?.bookshelf!.currentlyReading && (currentBooks$ | async)?.bookshelf!.currentlyReading.length != 0) {
-    <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
+    <div class="flex flex-row w-full h-full overflow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none md:w-[15%] flex flex-wrap flex-row"
       >
         @if ((currentBooks$ | async)?.bookshelf && (currentBooks$ | async)?.bookshelf!.currentlyReading) {
-          <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[0]'
-               class="object-fit h-full w-full rounded-md">
+          @if ((currentBooks$ | async)?.bookshelf!.currentlyReading.length < 4) {
+            <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[0]'
+                 class="object-fit h-full w-full rounded-md">
+          } @else {
+            <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[0]'
+                 class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tl-md">
+            <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[1]'
+                 class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-tr-md">
+            <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[2]'
+                 class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-bl-md">
+            <img alt="Book Cover Image" [src]='getCoverImage((currentBooks$ | async)!.bookshelf.currentlyReading)[3]'
+                 class="object-fit h-1/2 w-1/4 flex-grow basis-1/2 rounded-br-md">
+          }
         }
       </div>
       <div
@@ -14,48 +25,45 @@
       >
         <div class="w-full h-fit flex flex-col gap-0">
           <div
-            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden  mb-2"
           >
-            @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
-              @if (getMoods((currentBooks$ | async)!.bookshelf.currentlyReading).length > 1) {
+            @if (category === "currently reading" && (currentBooks$ | async)?.bookshelf!.currentlyReading) {
 
-                @for (mood of getMoods((currentBooks$ | async)!.bookshelf.currentlyReading); track mood) {
-                  <div
-                    class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
-                  >
-                    {{ mood }}
-                  </div>
-                }
-              } @else {
-                @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.currentlyReading); track bookCategory) {
-                  <div
-                    class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
-                  >
-                    {{ bookCategory.toLowerCase() }}
-                  </div>
-                }
+              @for (bookCategory of getCategories((currentBooks$ | async)!.bookshelf.currentlyReading); track bookCategory) {
+                <div
+                  class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+                >
+                  {{ bookCategory.toLowerCase() }}
+                </div>
               }
             }
           </div>
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
-            {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].author }}
-          </h3>
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm md:text-md">
+            @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
+              {{ getAuthorCount((currentBooks$ | async)!.bookshelf.currentlyReading) }} authors
+            }
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
           <p
             class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
           >
-            @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
-              {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].pages_read }}
+            @if (category === "currently reading" && (currentBooks$ | async)?.bookshelf!.currentlyReading) {
+              <p
+                class="font-tilt-neon font-semibold text-white text-3xl flex flex-row gap-2 justify-end align-self-end items-end"
+              >
+                {{ (currentBooks$ | async)!.bookshelf.currentlyReading.length }}
+                <span
+                  class="text-sm font-tilt-neon"> {{ (currentBooks$ | async)!.bookshelf.currentlyReading.length == 1 ? "book" : "books" }}
+                          </span>
+              </p>
             }
-
-            <span class="text-sm font-tilt-neon">pages read</span>
           </p>
         </div>
 
@@ -64,9 +72,9 @@
 
 
   } @else {
-    <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
+    <div class="flex flex-row w-full h-full overflow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none sm:w-1/5 flex flex-wrap flex-row md:w-[15%]"
       >
         <img alt="Book Cover Image" src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg"
              class="object-fit h-full w-full rounded-md">
@@ -75,11 +83,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2 overflow-x-scroll"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-amaranth font-tilt-neon">+
           </button>
@@ -89,9 +97,9 @@
   }
 } @else if (category === "tbr") {
   @if ((currentBooks$ | async)?.bookshelf!.tbr && (currentBooks$ | async)?.bookshelf!.tbr.length != 0) {
-    <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
+    <div class="flex flex-row w-full h-full overflow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none md:w-[15%] flex flex-wrap flex-row"
       >
         @if ((currentBooks$ | async)?.bookshelf && (currentBooks$ | async)?.bookshelf!.tbr) {
           @if ((currentBooks$ | async)?.bookshelf!.tbr.length < 4) {
@@ -114,7 +122,7 @@
       >
         <div class="w-full h-fit flex flex-col gap-0">
           <div
-            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden  mb-2"
           >
             @if (category === "tbr" && (currentBooks$ | async)?.bookshelf!.tbr) {
 
@@ -127,16 +135,16 @@
               }
             }
           </div>
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm md:text-md">
             @if ((currentBooks$ | async)?.bookshelf!.tbr) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.tbr) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -163,7 +171,7 @@
   } @else {
     <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none sm:w-1/5 flex flex-wrap flex-row md:w-[15%]"
       >
         <img alt="Book Cover Image" src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg"
              class="object-fit h-full w-full rounded-md">
@@ -172,11 +180,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-mantis-green font-tilt-neon">+
           </button>
@@ -188,7 +196,7 @@
   @if ((currentBooks$ | async)?.bookshelf!.read && (currentBooks$ | async)?.bookshelf!.read.length != 0) {
     <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none flex flex-wrap flex-row md:w-[15%]"
       >
         @if ((currentBooks$ | async)?.bookshelf && (currentBooks$ | async)?.bookshelf!.read) {
           @if ((currentBooks$ | async)?.bookshelf!.read.length < 4) {
@@ -211,7 +219,7 @@
       >
         <div class="w-full h-fit flex flex-col gap-0">
           <div
-            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden  mb-2"
           >
             @if ((currentBooks$ | async)?.bookshelf!.read) {
 
@@ -224,16 +232,16 @@
               }
             }
           </div>
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             @if ((currentBooks$ | async)?.bookshelf!.read) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.read) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -260,7 +268,7 @@
   } @else {
     <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none sm:w-1/5 flex flex-wrap flex-row md:w-[15%]"
       >
         <img alt="Book Cover Image" src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg"
              class="object-fit h-full w-full rounded-md">
@@ -269,11 +277,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-dull-violet font-tilt-neon">+
           </button>
@@ -285,7 +293,7 @@
   @if ((currentBooks$ | async)?.bookshelf!.dnf && (currentBooks$ | async)?.bookshelf!.dnf.length != 0) {
     <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none flex flex-wrap flex-row md:w-[15%]"
       >
         @if ((currentBooks$ | async)?.bookshelf && (currentBooks$ | async)?.bookshelf!.dnf) {
           @if ((currentBooks$ | async)?.bookshelf!.dnf.length < 4) {
@@ -308,7 +316,7 @@
       >
         <div class="w-full h-fit flex flex-col gap-0">
           <div
-            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden  mb-2"
           >
             @if ((currentBooks$ | async)?.bookshelf!.dnf) {
 
@@ -321,16 +329,16 @@
               }
             }
           </div>
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             @if ((currentBooks$ | async)?.bookshelf!.dnf) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.dnf) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -357,7 +365,7 @@
   } @else {
     <div class="flex flex-row w-full h-full overlow-y-scroll sm:overflow-y-hidden">
       <div
-        class="bg-transparent  w-[32%] h-full rounded-md sm:w-1/5 overflow-none flex flex-wrap flex-row"
+        class="bg-transparent w-1/3 h-full rounded-md overflow-none sm:w-1/5 flex flex-wrap flex-row md:w-[15%]"
       >
         <img alt="Book Cover Image" src="assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg"
              class="object-fit h-full w-full rounded-md">
@@ -366,18 +374,22 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full"
+          <p
+            class="font-tilt-neon text-white text-2xl font-bold ml-2 text-nowrap md:text-2xl w-full"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-indigo-dye font-tilt-neon mb-2">+
           </button>
         </div>
       </div>
     </div>
+
+
   }
 }
+
+
 
 

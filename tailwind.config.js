@@ -19,6 +19,9 @@ module.exports = {
         "pale-brown": "rgb(118, 92, 84)",
         "slate-gray": "rgb(116, 115, 143)",
         "china-rose": "rgb(190, 83, 99)",
+        "dark-amaranth": "rgb(180, 80, 95)",
+        "dark-mantis-green": "rgb(94, 125, 97)",
+        "dark-dull-violet": "rgb(130, 112, 156)",
       },
       fontFamily: {
         "rouge-script": ['"Rouge Script"', ...defaultTheme.fontFamily.sans],

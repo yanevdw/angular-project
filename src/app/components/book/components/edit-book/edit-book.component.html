@@ -1,0 +1,113 @@
+<div class="review-book-container bg-linen modal-box w-full h-4/5 absolute top-0 overflow-y-scroll">
+  <form method="dialog">
+    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+  </form>
+  <p class="text-pale-brown font-tilt-neon text-2xl font-semibold">Review Book</p>
+
+
+  <form
+    (ngSubmit)="handleSaveClick()"
+    [formGroup]="editBookForm"
+    class="w-full h-fit flex flex-col justify-center items-center gap-4 mt-8"
+  >
+    @if (currentCollection === "currently-reading") {
+      <input
+        class="w-full font-tilt-neon text-pale-brown input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+        formControlName="pagesRead"
+        placeholder="Pages read"
+        type="text"
+      />
+    }
+
+    <input
+      class="w-full font-tilt-neon text-pale-brown input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+      formControlName="comment"
+      placeholder="Comment"
+      type="text"/>
+
+
+    <input
+      class="w-full font-tilt-neon text-pale-brown input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+      formControlName="pace"
+      placeholder="Pace"
+      type="text"/>
+
+    <input
+      class="w-full font-tilt-neon text-pale-brown input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+      formControlName="mood"
+      placeholder="Mood"
+      type="text"/>
+
+    <div
+      class="w-full flex flex-col justify-center items-start px-8 text-black"
+    >
+      <mat-form-field class="w-full h-[4.5rem]">
+        <mat-select [(value)]="status"
+                    class="text-pale-brown font-tilt-neon text-lg"
+                    placeholder="Select a status">
+          <mat-option (click)="setStatus('completed')" value="completed"
+          >Completed
+          </mat-option
+          >
+          <mat-option (click)="setStatus('not completed')" value="not completed"
+          >Not completed
+          </mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    @if (status === "not completed") {
+      <input
+        class="w-full font-tilt-neon text-pale-brown input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+        formControlName="dnfReason"
+        placeholder="DNF reason"
+        type="text"/>
+    }
+    <div
+      class="w-full flex flex-col justify-center items-start px-8 text-black"
+    >
+      <mat-form-field class="w-full h-[4.5rem]">
+        <mat-select [(value)]="newCategory"
+                    class="text-pale-brown font-tilt-neon text-lg"
+                    placeholder="Select a new book category">
+          <mat-option (click)="setNewCategory('currently reading')" value="currently reading"
+          >Currently Reading
+          </mat-option
+          >
+          <mat-option (click)="setNewCategory('tbr')" value="tbr"
+          >TBR
+          </mat-option
+          >
+          <mat-option (click)="setNewCategory('read')" value="read"
+          >Read
+          </mat-option
+          >
+          <mat-option (click)="setNewCategory('dnf')" value="dnf"
+          >DNF
+          </mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <label class="w-fit text-pale-brown text-lg font-tilt-neon">Rating: </label>
+    <div class="rating rating-lg mt-2">
+      <input class="mask mask-star-2 bg-red-400" formControlName="oneStarRating" type="radio" value=1/>
+      <input class="mask mask-star-2 bg-orange-400" formControlName="twoStarRating" type="radio" value=1/>
+      <input class="mask mask-star-2 bg-yellow-400" formControlName="threeStarRating" type="radio"
+             value=1/>
+      <input class="mask mask-star-2 bg-lime-400" formControlName="fourStarRating" type="radio" value=1/>
+      <input class="mask mask-star-2 bg-bg-green-400" formControlName="fiveStarRating" type="radio"
+             value=1/>
+    </div>
+    <button
+      class="btn w-1/10 bg-amaranth text-lg font-tilt-neon text-white font-semibold hover:cursor-pointer select:shadow-md mt-4"
+      type="submit">
+      Save
+    </button>
+  </form>
+
+
+</div>
+
+

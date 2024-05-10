@@ -22,6 +22,7 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.bookshelfSubscription = this.currentBooks$.subscribe();
+    this.currentBooks$ = this.bookStore.select(selectedBookshelf);
   }
 
   calculateTotalBooks(

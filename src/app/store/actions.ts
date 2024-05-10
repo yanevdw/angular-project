@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Bookshelf } from '../models/states';
+import { Book, Bookshelf } from '../models/states';
 
 // Actions for bookshelf
 export const getBookshelf = createAction(
@@ -21,11 +21,27 @@ export const getBooksComplete = createAction(
   props<{ books: Bookshelf }>(),
 );
 
-//Actions for API calls
-// export const getBooks = createAction('[BOOKS] Get Books');
-//
-// export const getBooksComplete = createAction(
-//   '[BOOKS] GetBooksComplete',
-//   props<{ books: Book[] }>(),
-// );
-//--------------------------------------------------------------------------------------------------------
+export const addBook = createAction(
+  '[BOOKSHELF] Add Book',
+  props<{ book: Book; bookshelfId: string }>(),
+);
+
+export const addBookComplete = createAction('[BOOKSHELF] Add BookComplete');
+
+export const updateBook = createAction(
+  '[BOOKSHELF] Update Book',
+  props<{ bookId: string; book: Book; bookshelfId: string }>(),
+);
+
+export const updateBookComplete = createAction(
+  '[BOOKSHELF] Update BookComplete',
+);
+
+export const deleteBook = createAction(
+  '[BOOKSHELF] Delete Book',
+  props<{ bookIdIsbn: string }>(),
+);
+
+export const deleteBookComplete = createAction(
+  '[BOOKSHELF] Delete BookComplete',
+);

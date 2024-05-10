@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { take } from 'rxjs';
 import { VolumeInfo } from '../../models/states';
 import { matTouchAppOutline } from '@ng-icons/material-icons/outline';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { AddBookComponent } from './components/add-book/add-book.component';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-explore',
@@ -15,7 +15,7 @@ import { AddBookComponent } from './components/add-book/add-book.component';
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.scss',
 })
-export class ExploreComponent {
+export class ExploreComponent implements OnDestroy {
   apiService = inject(ApiService);
   searchForm = this.fb.group({
     searchTerm: '',

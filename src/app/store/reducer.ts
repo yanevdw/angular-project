@@ -1,5 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { getBooksComplete, getBookshelfComplete } from './actions';
+import {
+  addBookComplete,
+  deleteBookComplete,
+  getBooksComplete,
+  getBookshelfComplete,
+  updateBookComplete,
+} from './actions';
 import { Bookshelf } from '../models/states';
 
 export interface CurrentBookshelfState {
@@ -21,4 +27,7 @@ export const bookshelfReducer = createReducer(
   on(getBooksComplete, (state, { books }) => {
     return { ...state, books };
   }),
+  on(addBookComplete, (state) => ({ ...state })),
+  on(updateBookComplete, (state) => ({ ...state })),
+  on(deleteBookComplete, (state) => ({ ...state })),
 );
