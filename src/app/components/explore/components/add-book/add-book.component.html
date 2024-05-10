@@ -14,9 +14,6 @@
         }
       </div>
       <div class="w-4/5 h-full overflow-y-hidden overflow-x-hidden flex flex-col justify-center items-center gap-1">
-        @if (book?.subtitle) {
-          <p class="text-xl w-fit font-tilt-neon text-china-rose font-semibold">{{ book?.subtitle }}</p>
-        }
         <p class="text-xl font-tilt-neon text-pale-brown">{{ book?.authors?.[0] }}</p>
         <div class="book-info-pills ">
           @if (book?.pageCount) {
@@ -47,14 +44,14 @@
       </div>
 
     </div>
-    <div class="description-container w-full h-2/5 overflow-x-hidden overflow-y-scroll mt-4">
+    <div class="description-container w-full h-[55%] overflow-x-hidden overflow-y-scroll mt-4">
       <p class="text-lg font-tilt-neon text-pale-brown h-full">{{ book?.description }}</p>
     </div>
 
   </div>
 
   <div
-    class="add-book-container mt-12 bg-seasalt rounded-xl h-full w-full overflow-x-hidden hidden"
+    class="add-book-container mt-20 bg-seasalt rounded-xl h-full w-full overflow-x-hidden hidden"
     id="add-book-container"
   >
     <p class="font-tilt-neon text-pale-brown text-3xl font-semibold text-center py-4">Add Book:</p>
