@@ -3,8 +3,11 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
+  doc,
   Firestore,
   query,
+  setDoc,
   where,
 } from '@angular/fire/firestore';
 import { Book, Bookshelf, BookShelf } from '../models/states';
@@ -83,5 +86,32 @@ export class DataService {
       where('isbn', '==', Number(bookIsbn)),
     );
     return collectionData(bookQuery) as Observable<Book[]>;
+  }
+
+  getBookId(bookIsbn: string) {
+    const bookQuery = query(
+      collection(this.firestore, 'book'),
+      where('isbn', '==', Number(bookIsbn)),
+    );
+    return collectionData(bookQuery, {
+      idField: 'id',
+    }) as Observable<Book[]>;
+  }
+
+  addBook(book: Book, bookshelfId: string) {
+    console.log(book);
+    return from(
+      addDoc(collection(this.firestore, 'book'), book).then(() => {}),
+    );
+  }
+
+  deleteBook(bookId: string) {
+    const bookRef = doc(this.firestore, 'book/' + bookId);
+    return from(deleteDoc(bookRef).then(() => {}));
+  }
+
+  updateBook(bookId: string, book: Book, bookshelfId: string) {
+    const bookRef = doc(this.firestore, 'book/' + bookId);
+    return from(setDoc(bookRef, book).then(() => {}));
   }
 }
