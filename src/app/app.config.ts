@@ -10,6 +10,7 @@ import { UserEffects } from './store/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { bookshelfFeatureKey, bookshelfReducer } from './store/reducer';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,5 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: bookshelfFeatureKey, reducer: bookshelfReducer }),
     provideEffects(UserEffects),
     provideHttpClient(),
+    provideAnimationsAsync(),
   ],
 };
