@@ -99,7 +99,6 @@ export class DataService {
   }
 
   addBook(book: Book, bookshelfId: string) {
-    console.log(book);
     return from(
       addDoc(collection(this.firestore, 'book'), book).then(() => {}),
     );
