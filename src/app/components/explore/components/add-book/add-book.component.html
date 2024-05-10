@@ -1,11 +1,11 @@
-<div class="bg-linen modal-box w-full h-4/5 absolute top-0">
+<div class="bg-linen modal-box w-full h-4/5 absolute top-0 overflow-y-scroll">
   <form method="dialog">
     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
   </form>
-  <p class="font-bold text-3xl font-tilt-neon text-pale-brown mb-4">{{ book?.title }}</p>
-  <div class="book-info-container w-full h-[85%]">
-    <div class="book-basics-container flex flex-row h-[35%]">
-      <div class="book-cover-container w-1/3 h-full">
+  <p class="font-bold text-3xl font-tilt-neon text-pale-brown">{{ book?.title }}</p>
+  <div class="book-info-container w-full h-3/5">
+    <div class="book-basics-container flex flex-row h-3/5">
+      <div class="book-cover-container w-1/2 h-full">
         @if (book?.imageLinks?.thumbnail) {
           <img [src]=book?.imageLinks?.thumbnail alt="Book Cover Image" class="rounded-md w-full h-full">
         } @else {
@@ -13,29 +13,23 @@
                class="rounded-md w-full h-full">
         }
       </div>
-      <div class="w-2/3 h-full overflow-y-hidden overflow-x-hidden flex flex-col justify-center items-center gap-2">
+      <div class="w-4/5 h-full overflow-y-hidden overflow-x-hidden flex flex-col justify-center items-center gap-1">
         @if (book?.subtitle) {
-          <p class="text-2xl font-tilt-neon text-china-rose">{{ book?.subtitle }}</p>
+          <p class="text-xl w-fit font-tilt-neon text-china-rose font-semibold">{{ book?.subtitle }}</p>
         }
         <p class="text-xl font-tilt-neon text-pale-brown">{{ book?.authors?.[0] }}</p>
-        <div class="book-info-pills flex flex-row gap-2 overlfow-x-scroll">
+        <div class="book-info-pills ">
           @if (book?.pageCount) {
             <label
               class="w-fit h-fit bg-seasalt font-tilt-neon text-pale-brown text-sm rounded-2xl text-nowrap px-2.5 py-1.5">
               {{ book?.pageCount }} pages
             </label>
           }
-          @if (book?.publishedDate) {
-            <label
-              class="w-fit h-fit bg-seasalt font-tilt-neon text-pale-brown text-sm rounded-2xl text-nowrap px-2.5 py-1.5">
-              Published: {{ book?.publishedDate }}
-            </label>
-          }
+
         </div>
         <button
-          [nzType]="'primary'"
-          class="login-form-button login-form-margin w-2/5 rounded-2xl flex flex-row gap-0 mt-4 hover:cursor-pointer"
-          nz-button
+          (click)="handleAddBookClick()"
+          class="add-book-button login-form-margin w-2/5 rounded-2xl mt-4 flex flex-row gap-0  hover:cursor-pointer"
         >
           <div
             class="w-1/3 h-full bg-gradient-to-r from-burnt-sienna via-amaranth to-slate-500 rounded-l-3xl"
@@ -54,9 +48,169 @@
 
     </div>
     <div class="description-container w-full h-2/5 overflow-x-hidden overflow-y-scroll mt-4">
-      <p class="text-lg font-tilt-neon text-pale-brown">{{ book?.description }}</p>
+      <p class="text-lg font-tilt-neon text-pale-brown h-full">{{ book?.description }}</p>
     </div>
 
+  </div>
+
+  <div
+    class="add-book-container mt-12 bg-seasalt rounded-xl h-full w-full overflow-x-hidden hidden"
+    id="add-book-container"
+  >
+    <p class="font-tilt-neon text-pale-brown text-3xl font-semibold text-center py-4">Add Book:</p>
+    <div class="w-full h-fit flex flex-col">
+      <div
+        class="w-full flex flex-col justify-center items-start px-8 text-black"
+      >
+        <mat-form-field class="w-full h-[4.5rem]">
+          <mat-select [(value)]="selectedCategory"
+                      class="text-pale-brown font-tilt-neon text-lg"
+                      placeholder="Select a category">
+            <mat-option (click)="setSelectedCategory('reading')" value="currently reading"
+            >Currently Reading
+            </mat-option
+            >
+            <mat-option (click)="setSelectedCategory('tbr')" value="tbr"
+            >TBR
+            </mat-option
+            >
+            <mat-option (click)="setSelectedCategory('read')" value="read"
+            >Read
+            </mat-option
+            >
+            <mat-option (click)="setSelectedCategory('dnf')" value="dnf"
+            >DNF
+            </mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      @if (selectedCategory === "dnf") {
+        <form
+          [formGroup]="dnfForm"
+
+          (submit)="handleAddBook()"
+          class="w-full h-1/5 flex flex-col justify-center items-center gap-4"
+          nz-form>
+          <nz-form-item class="w-4/5 h-full">
+            <nz-form-control
+              class="h-full mt-2"
+              nzErrorTip="Please enter a DNF reason."
+            >
+              <nz-input-group class="h-full w-full">
+                <input
+                  class="w-full input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+                  formControlName="dnfReason"
+                  nz-input
+                  placeholder="DNF Reason"
+                  type="text"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <label class="w-fit text-pale-brown text-lg font-tilt-neon">Rating: </label>
+          <div class="rating rating-lg">
+            <input type="radio" formControlName="oneStarRating" value=1 class="mask mask-star-2 bg-red-400"/>
+            <input type="radio" formControlName="twoStarRating" value=1 class="mask mask-star-2 bg-orange-400"/>
+            <input type="radio" formControlName="threeStarRating" value=1
+                   class="mask mask-star-2 bg-yellow-400"/>
+            <input type="radio" formControlName="fourStarRating" value=1 class="mask mask-star-2 bg-lime-400"/>
+            <input type="radio" formControlName="fiveStarRating" value=1
+                   class="mask mask-star-2 bg-bg-green-400"/>
+          </div>
+          <button
+            class="btn w-1/10 bg-amaranth text-lg font-tilt-neon text-white font-semibold hover:cursor-pointer select:shadow-md"
+            type="submit">
+            Add book
+          </button>
+        </form>
+      } @else if (selectedCategory === "read") {
+        <form
+          [formGroup]="readForm"
+          (submit)="handleAddBook()"
+          class="w-full h-1/5 flex flex-col justify-center items-center gap-4"
+          nz-form>
+          <nz-form-item class="w-4/5 h-full">
+            <nz-form-control
+              class="h-full mt-2"
+              nzErrorTip="Please enter a comment"
+            >
+              <nz-input-group class="h-full w-full">
+                <input
+                  class="w-full input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+                  formControlName="comment"
+                  nz-input
+                  placeholder="Comment"
+                  type="text"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="w-4/5 h-full">
+            <nz-form-control
+              class="h-full mt-2"
+              nzErrorTip="Please enter a pace."
+            >
+              <nz-input-group class="h-full w-full">
+                <input
+                  class="w-full input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+                  formControlName="pace"
+                  nz-input
+                  placeholder="Pace"
+                  type="text"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="w-4/5 h-full">
+            <nz-form-control
+              class="h-full mt-2"
+              nzErrorTip="Please enter a comment"
+            >
+              <nz-input-group class="h-full w-full">
+                <input
+                  class="w-full input rounded-xl flex items-center gap-2 focus:outline-none focus:border-none hover:outline-none"
+                  formControlName="mood"
+                  nz-input
+                  placeholder="Mood"
+                  type="text"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <label class="w-fit text-pale-brown text-lg font-tilt-neon">Rating: </label>
+          <div class="rating rating-lg">
+            <input type="radio" formControlName="oneStarRating" value=1 class="mask mask-star-2 bg-red-400"/>
+            <input type="radio" formControlName="twoStarRating" value=1 class="mask mask-star-2 bg-orange-400"/>
+            <input type="radio" formControlName="threeStarRating" value=1
+                   class="mask mask-star-2 bg-yellow-400"/>
+            <input type="radio" formControlName="fourStarRating" value=1 class="mask mask-star-2 bg-lime-400"/>
+            <input type="radio" formControlName="fiveStarRating" value=1
+                   class="mask mask-star-2 bg-bg-green-400"/>
+          </div>
+          <button
+            class="btn w-1/10 bg-amaranth text-lg font-tilt-neon text-white font-semibold hover:cursor-pointer select:shadow-md"
+            type="submit">
+            Add book
+          </button>
+        </form>
+      } @else if (selectedCategory === "currently reading" || selectedCategory === "tbr") {
+        <div
+
+          class="w-full flex justify-center"
+        >
+
+          <button
+            (click)="handleAddBook()"
+            class="btn w-1/10 bg-amaranth text-lg font-tilt-neon text-white font-semibold hover:cursor-pointer select:shadow-md"
+            type="submit">
+            Add book
+          </button>
+        </div>
+      }
+    </div>
   </div>
 </div>
 
