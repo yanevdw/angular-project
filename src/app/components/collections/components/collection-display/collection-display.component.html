@@ -12,16 +12,16 @@
       <div
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
-        <div class="w-full h-fit flex flex-col gap-0">
+        <div class="w-full h-fit flex flex-col gap-2">
           <div
-            class="genre-container flex flex-row justify-start gap-2 overflow-x-scroll sm:overflow-hidden"
+            class="genre-container flex flex-row justify-start overflow-x-scroll sm:overflow-hidden"
           >
             @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
               @if (getMoods((currentBooks$ | async)!.bookshelf.currentlyReading).length > 1) {
 
                 @for (mood of getMoods((currentBooks$ | async)!.bookshelf.currentlyReading); track mood) {
                   <div
-                    class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1"
+                    class="bg-white rounded-2xl font-tilt-neon text-nowrap text-black text-xs w-fit h-fit px-2 py-1 m-0 p-0"
                   >
                     {{ mood }}
                   </div>
@@ -37,14 +37,14 @@
               }
             }
           </div>
-          <h2
-            class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
+          <p
+            class="font-tilt-neon text-white text-xl font-bold text-nowrap mb-0 md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].author }}
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -54,7 +54,6 @@
             @if ((currentBooks$ | async)?.bookshelf!.currentlyReading) {
               {{ (currentBooks$ | async)!.bookshelf.currentlyReading[0].pages_read }}
             }
-
             <span class="text-sm font-tilt-neon">pages read</span>
           </p>
         </div>
@@ -75,11 +74,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-amaranth font-tilt-neon">+
           </button>
@@ -127,16 +126,16 @@
               }
             }
           </div>
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             @if ((currentBooks$ | async)?.bookshelf!.tbr) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.tbr) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -172,11 +171,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-mantis-green font-tilt-neon">+
           </button>
@@ -224,16 +223,16 @@
               }
             }
           </div>
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             @if ((currentBooks$ | async)?.bookshelf!.read) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.read) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -269,11 +268,11 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full mb-2"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-dull-violet font-tilt-neon">+
           </button>
@@ -321,16 +320,16 @@
               }
             }
           </div>
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold mt-2 text-nowrap md:text-2xl"
           >
             {{ category.toUpperCase() }}
-          </h2>
-          <h3 class="font-tilt-neon font-extralight text-white text-sm">
+          </p>
+          <p class="font-tilt-neon font-extralight text-white text-sm">
             @if ((currentBooks$ | async)?.bookshelf!.dnf) {
               {{ getAuthorCount((currentBooks$ | async)!.bookshelf.dnf) }} authors
             }
-          </h3>
+          </p>
         </div>
 
         <div class="pages-left-container align-bottom">
@@ -366,18 +365,22 @@
         class="category-container flex flex-col w-[65%] sm:w-9/10 h-full justify-between pl-4"
       >
         <div class="w-full h-full flex flex-col gap-0 justify-between items-end">
-          <h2
+          <p
             class="font-tilt-neon text-white text-xl font-bold ml-2 text-nowrap md:text-2xl w-full"
           >
             {{ category.toUpperCase() }}
-          </h2>
+          </p>
           <button [routerLink]="['explore']"
                   class="bg-white h-fit w-fit px-3 py-1 rounded-3xl text-2xl text-indigo-dye font-tilt-neon mb-2">+
           </button>
         </div>
       </div>
     </div>
+
+
   }
 }
+
+
 
 
