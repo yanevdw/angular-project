@@ -101,7 +101,7 @@ export class AddBookComponent {
     newBook.bookshelfId = localStorage.getItem('bookshelfId') ?? '';
 
     if (
-      this.selectedCategory === 'reading' ||
+      this.selectedCategory === 'currently reading' ||
       this.selectedCategory === 'tbr'
     ) {
       newBook.comments = [''];
